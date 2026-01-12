@@ -67,24 +67,14 @@ export default function Hero({ profile, githubStats }: HeroProps) {
 
                 {/* Profile Info */}
                 <div className="flex-1 text-center lg:text-left">
-                  <div className="flex items-center justify-center lg:justify-start gap-3 mb-3">
-                    <h1 className="text-4xl lg:text-6xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
-                      {profile?.name || "Neshun R"}
-                    </h1>
-                    <motion.div
-                      animate={{ rotate: [0, 14, -8, 14, -4, 10, 0] }}
-                      transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1 }}
-                      className="text-3xl"
-                    >
-                      👋
-                    </motion.div>
-                  </div>
+                  <h1 className="text-4xl lg:text-6xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent mb-3">
+                    {profile?.name || "Neshun R"}
+                  </h1>
 
                   {profile?.location && (
                     <div className="flex items-center justify-center lg:justify-start gap-2 mb-4 text-muted-foreground">
                       <MapPin className="w-4 h-4" />
                       <span>{profile.location}</span>
-                      <span className="text-lg">🇮🇳</span>
                     </div>
                   )}
 
@@ -92,10 +82,10 @@ export default function Hero({ profile, githubStats }: HeroProps) {
                   <div className="min-h-[70px] mb-6">
                     <TypeWriter
                       texts={[
-                        "💻 Full-stack developer passionate about AI",
-                        "🔒 Building scalable and secure systems",
-                        "🛡️ Cybersecurity enthusiast and problem solver",
-                        "🚀 Creating innovative tech solutions",
+                        "Full-stack developer passionate about AI",
+                        "Building scalable and secure systems",
+                        "Cybersecurity enthusiast and problem solver",
+                        "Creating innovative tech solutions",
                       ]}
                       typingSpeed={50}
                       deletingSpeed={30}
@@ -123,7 +113,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
                   {/* Bio */}
                   <p className="text-foreground/80 leading-relaxed mb-6 max-w-2xl">
                     {profile?.bio ||
-                      "🎓 2nd-year CS Engineering student at SSN College of Engineering. Building robust systems and solving real-world problems with a focus on user experience and architectural thinking."}
+                      "2nd-year CS Engineering student at SSN College of Engineering. Building robust systems and solving real-world problems with a focus on user experience and architectural thinking."}
                   </p>
 
                   {/* Social Links - Enhanced */}
@@ -179,7 +169,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
           </Card>
         </motion.div>
 
-        {/* Stats Grid - Enhanced with Emojis */}
+        {/* Stats Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <motion.div variants={itemVariants}>
             <motion.div
@@ -187,8 +177,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
               transition={{ type: "spring", stiffness: 300 }}
             >
               <Card className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 backdrop-blur">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="text-3xl">📦</div>
+                <div className="flex items-center justify-end mb-3">
                   <Github className="w-5 h-5 text-primary" />
                 </div>
                 <div className="text-3xl font-bold text-primary mb-1">
@@ -205,8 +194,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
               transition={{ type: "spring", stiffness: 300 }}
             >
               <Card className="p-6 bg-gradient-to-br from-chart-2/10 to-chart-2/5 border-chart-2/20 backdrop-blur">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="text-3xl">👥</div>
+                <div className="flex items-center justify-end mb-3">
                   <Heart className="w-5 h-5 text-chart-2" />
                 </div>
                 <div className="text-3xl font-bold text-chart-2 mb-1">
@@ -223,8 +211,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
               transition={{ type: "spring", stiffness: 300 }}
             >
               <Card className="p-6 bg-gradient-to-br from-chart-3/10 to-chart-3/5 border-chart-3/20 backdrop-blur">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="text-3xl">🤝</div>
+                <div className="flex items-center justify-end mb-3">
                   <ExternalLink className="w-5 h-5 text-chart-3" />
                 </div>
                 <div className="text-3xl font-bold text-chart-3 mb-1">
@@ -241,8 +228,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
               transition={{ type: "spring", stiffness: 300 }}
             >
               <Card className="p-6 bg-gradient-to-br from-chart-4/10 to-chart-4/5 border-chart-4/20 backdrop-blur">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="text-3xl">⭐</div>
+                <div className="flex items-center justify-end mb-3">
                   <Award className="w-5 h-5 text-chart-4" />
                 </div>
                 <div className="text-3xl font-bold text-chart-4 mb-1">
@@ -254,11 +240,11 @@ export default function Hero({ profile, githubStats }: HeroProps) {
           </motion.div>
         </div>
 
-        {/* Fun Facts / Quick Info Cards */}
+        {/* Quick Info Cards */}
         <motion.div variants={itemVariants} className="grid md:grid-cols-3 gap-4 mb-12">
           <Card className="p-4 bg-card/30 backdrop-blur border-border/50">
             <div className="flex items-center gap-3">
-              <div className="text-2xl">☕</div>
+              <Coffee className="w-5 h-5 text-primary" />
               <div>
                 <div className="text-sm text-muted-foreground">Powered by</div>
                 <div className="font-semibold text-foreground">Coffee & Code</div>
@@ -268,7 +254,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
 
           <Card className="p-4 bg-card/30 backdrop-blur border-border/50">
             <div className="flex items-center gap-3">
-              <div className="text-2xl">📍</div>
+              <MapPin className="w-5 h-5 text-chart-2" />
               <div>
                 <div className="text-sm text-muted-foreground">Currently</div>
                 <div className="font-semibold text-foreground">Open to Work</div>
@@ -278,7 +264,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
 
           <Card className="p-4 bg-card/30 backdrop-blur border-border/50">
             <div className="flex items-center gap-3">
-              <div className="text-2xl">🎯</div>
+              <Zap className="w-5 h-5 text-chart-3" />
               <div>
                 <div className="text-sm text-muted-foreground">Focus on</div>
                 <div className="font-semibold text-foreground">AI & Security</div>

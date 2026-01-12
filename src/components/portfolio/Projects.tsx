@@ -54,15 +54,15 @@ export default function Projects() {
         {/* Section Header */}
         <motion.div variants={itemVariants} className="text-center mb-12">
           <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4 flex items-center justify-center gap-3">
-            <span>💼</span>
+            <span></span>
             Projects
-            <span>🎨</span>
+            <span></span>
           </h2>
           <div className="w-20 h-1 bg-primary mx-auto mb-6" />
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             A collection of projects showcasing my skills across different
             domains. Each project reflects my commitment to quality and
-            innovation. 🚀
+            innovation. 
           </p>
         </motion.div>
 
