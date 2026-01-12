@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import TypeWriter from "./TypeWriter";
 
 interface HeroProps {
   profile: any;
@@ -57,15 +58,22 @@ export default function Hero({ profile, githubStats }: HeroProps) {
               </div>
             </div>
 
-            <motion.p
-              variants={itemVariants}
-              className="text-xl text-muted-foreground leading-relaxed"
-            >
-              {profile?.tagline ||
-                "Full-stack developer passionate about AI, cybersecurity, and building scalable systems"}
-            </motion.p>
+            <motion.div variants={itemVariants} className="min-h-[60px]">
+              <TypeWriter
+                texts={[
+                  "Full-stack developer passionate about AI",
+                  "Building scalable and secure systems",
+                  "Cybersecurity enthusiast and problem solver",
+                  "Creating innovative tech solutions",
+                ]}
+                typingSpeed={50}
+                deletingSpeed={30}
+                pauseDuration={2500}
+                className="text-xl text-primary font-medium leading-relaxed"
+              />
+            </motion.div>
 
-            <motion.p variants={itemVariants} className="text-foreground/90">
+            <motion.p variants={itemVariants} className="text-foreground/90 leading-relaxed">
               {profile?.bio ||
                 "2nd-year CS Engineering student at SSN College of Engineering. Building robust systems and solving real-world problems with a focus on user experience and architectural thinking."}
             </motion.p>

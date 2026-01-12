@@ -18,29 +18,63 @@ export default function Portfolio() {
 
       <main className="relative">
         {/* Hero Section */}
-        <section id="hero" className="min-h-screen">
+        <motion.section
+          id="hero"
+          className="min-h-screen"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
           <Hero profile={profile} githubStats={githubStats} />
-        </section>
+        </motion.section>
 
         {/* About Section */}
-        <section id="about" className="min-h-screen py-20">
+        <motion.section
+          id="about"
+          className="min-h-screen py-20 relative"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+        >
           <About />
-        </section>
+        </motion.section>
 
         {/* Projects Section */}
-        <section id="projects" className="min-h-screen py-20">
+        <motion.section
+          id="projects"
+          className="min-h-screen py-20 relative"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+        >
           <Projects />
-        </section>
+        </motion.section>
 
         {/* Skills Section */}
-        <section id="skills" className="min-h-screen py-20">
+        <motion.section
+          id="skills"
+          className="min-h-screen py-20 relative"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+        >
           <Skills />
-        </section>
+        </motion.section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-20">
+        <motion.section
+          id="contact"
+          className="py-20 relative"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+        >
           <Contact profile={profile} />
-        </section>
+        </motion.section>
       </main>
 
       {/* Animated background gradient */}

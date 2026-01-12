@@ -24,13 +24,22 @@ export default function Skills() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.05 },
+      transition: { staggerChildren: 0.08, delayChildren: 0.15 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { opacity: 1, x: 0 },
+    hidden: { opacity: 0, x: -50, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      scale: 1,
+      transition: {
+        type: "spring" as const,
+        stiffness: 120,
+        damping: 14,
+      }
+    },
   };
 
   const allCategories = ["all", ...(categories || [])];
