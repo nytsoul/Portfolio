@@ -89,8 +89,10 @@ export default function About() {
       >
         {/* Section Header */}
         <motion.div variants={itemVariants} className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4 flex items-center justify-center gap-3">
+            <span>👨‍💻</span>
             About Me
+            <span>✨</span>
           </h2>
           <div className="w-20 h-1 bg-primary mx-auto" />
         </motion.div>
@@ -154,12 +156,14 @@ export default function About() {
 
         {/* Expertise Areas */}
         <motion.div variants={itemVariants} className="mt-12">
-          <h3 className="text-2xl font-semibold text-foreground mb-6 text-center">
+          <h3 className="text-2xl font-semibold text-foreground mb-6 text-center flex items-center justify-center gap-2">
+            <span>🚀</span>
             Areas of Expertise
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
-            <Card className="p-6 bg-card/50 backdrop-blur border-border">
-              <h4 className="text-lg font-semibold text-primary mb-3">
+            <Card className="p-6 bg-gradient-to-br from-primary/5 to-primary/10 backdrop-blur border-primary/20 hover:border-primary/40 transition-colors">
+              <h4 className="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
+                <span>💻</span>
                 Full-Stack Development
               </h4>
               <p className="text-muted-foreground text-sm">
@@ -167,8 +171,9 @@ export default function About() {
                 technologies. From responsive frontends to scalable backends.
               </p>
             </Card>
-            <Card className="p-6 bg-card/50 backdrop-blur border-border">
-              <h4 className="text-lg font-semibold text-chart-2 mb-3">
+            <Card className="p-6 bg-gradient-to-br from-chart-2/5 to-chart-2/10 backdrop-blur border-chart-2/20 hover:border-chart-2/40 transition-colors">
+              <h4 className="text-lg font-semibold text-chart-2 mb-3 flex items-center gap-2">
+                <span>🤖</span>
                 AI & Machine Learning
               </h4>
               <p className="text-muted-foreground text-sm">
@@ -176,8 +181,9 @@ export default function About() {
                 and creating intelligent systems that enhance user experiences.
               </p>
             </Card>
-            <Card className="p-6 bg-card/50 backdrop-blur border-border">
-              <h4 className="text-lg font-semibold text-chart-3 mb-3">
+            <Card className="p-6 bg-gradient-to-br from-chart-3/5 to-chart-3/10 backdrop-blur border-chart-3/20 hover:border-chart-3/40 transition-colors">
+              <h4 className="text-lg font-semibold text-chart-3 mb-3 flex items-center gap-2">
+                <span>🔒</span>
                 Cybersecurity
               </h4>
               <p className="text-muted-foreground text-sm">
