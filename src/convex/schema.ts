@@ -32,12 +32,69 @@ const schema = defineSchema(
       role: v.optional(roleValidator), // role of the user. do not remove
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
-    // add other tables here
+    // Portfolio tables
+    profile: defineTable({
+      userId: v.id("users"),
+      name: v.string(),
+      location: v.optional(v.string()),
+      bio: v.optional(v.string()),
+      tagline: v.optional(v.string()),
+      profileImage: v.optional(v.string()),
+      email: v.optional(v.string()),
+      website: v.optional(v.string()),
+      github: v.optional(v.string()),
+      linkedin: v.optional(v.string()),
+      twitter: v.optional(v.string()),
+      resumeUrl: v.optional(v.string()),
+    }).index("by_user", ["userId"]),
 
-    // tableName: defineTable({
-    //   ...
-    //   // table fields
-    // }).index("by_field", ["field"])
+    githubStats: defineTable({
+      userId: v.id("users"),
+      username: v.string(),
+      publicRepos: v.number(),
+      followers: v.number(),
+      following: v.number(),
+      totalStars: v.optional(v.number()),
+      totalForks: v.optional(v.number()),
+      lastUpdated: v.number(),
+    }).index("by_user", ["userId"]),
+
+    projects: defineTable({
+      userId: v.id("users"),
+      name: v.string(),
+      description: v.optional(v.string()),
+      category: v.string(), // Web Development, Backend, Cybersecurity, Competitive Programming, etc.
+      languages: v.array(v.string()),
+      topics: v.array(v.string()),
+      stars: v.number(),
+      forks: v.number(),
+      url: v.string(),
+      homepage: v.optional(v.string()),
+      featured: v.boolean(),
+      githubRepoId: v.optional(v.number()),
+      lastUpdated: v.number(),
+    }).index("by_user", ["userId"])
+      .index("by_user_and_category", ["userId", "category"])
+      .index("by_user_and_featured", ["userId", "featured"]),
+
+    skills: defineTable({
+      userId: v.id("users"),
+      name: v.string(),
+      category: v.string(), // Languages, Frameworks, Tools, etc.
+      strength: v.number(), // 0-100 based on usage frequency
+      usageCount: v.number(),
+      lastUsed: v.number(),
+    }).index("by_user", ["userId"])
+      .index("by_user_and_category", ["userId", "category"]),
+
+    achievements: defineTable({
+      userId: v.id("users"),
+      title: v.string(),
+      value: v.string(),
+      description: v.optional(v.string()),
+      icon: v.optional(v.string()),
+      order: v.number(),
+    }).index("by_user", ["userId"])
   },
   {
     schemaValidation: false,
