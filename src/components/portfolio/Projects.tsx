@@ -14,10 +14,12 @@ export default function Projects() {
     threshold: 0.1,
   });
 
-  const { data: categories } = useProjectCategories();
-  const { data: projects } = useProjects({
+  const categoriesData = useProjectCategories() ?? {} as any;
+  const categories = categoriesData.data ?? [];
+  const projectsData = useProjects({
     category: selectedCategory === "all" ? undefined : selectedCategory,
-  });
+  }) ?? {} as any;
+  const projects = projectsData.data ?? [];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -83,7 +85,7 @@ export default function Projects() {
 
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects?.map((project, index) => (
+          {projects?.map((project: any, index: number) => (
             <motion.div
               key={project._id}
               variants={itemVariants}

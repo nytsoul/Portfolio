@@ -43,7 +43,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     setError(null);
     try {
       const formData = new FormData(event.currentTarget);
-      await signIn("email-otp", formData);
+      await signIn();
       setStep({ email: formData.get("email") as string });
       setIsLoading(false);
     } catch (error) {
@@ -63,7 +63,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     setError(null);
     try {
       const formData = new FormData(event.currentTarget);
-      await signIn("email-otp", formData);
+      await signIn();
 
       console.log("signed in");
 
@@ -84,7 +84,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     setError(null);
     try {
       console.log("Attempting anonymous sign in...");
-      await signIn("anonymous");
+      await signIn();
       console.log("Anonymous sign in successful");
       const redirect = redirectAfterAuth || "/";
       navigate(redirect);

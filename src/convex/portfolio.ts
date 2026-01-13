@@ -1,6 +1,6 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
-import { DEMO_PROJECTS, DEMO_SKILLS, DEMO_ACHIEVEMENTS } from "./demo-data";
+import { DEMO_PROJECTS, DEMO_SKILLS, DEMO_ACHIEVEMENTS } from "./demo_data";
 
 // Profile queries and mutations
 export const getProfile = query({

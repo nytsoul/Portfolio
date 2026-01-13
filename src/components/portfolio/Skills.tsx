@@ -42,8 +42,9 @@ export default function Skills() {
     threshold: 0.1,
   });
 
-  const { data: categories } = useSkillCategories();
-  const skills = LOCAL_SKILLS;
+  const categoriesData = useSkillCategories() ?? {} as any;
+  const categories = categoriesData.data ?? [];
+  const skills = LOCAL_SKILLS ?? [];
 
 
   const containerVariants = {
@@ -83,14 +84,14 @@ export default function Skills() {
   const allCategories = ["all", ...(categories || [])];
 
   // Group skills by category
-  const skillsByCategory = (skills || []).reduce((acc, skill) => {
+  const skillsByCategory = (skills ?? []).reduce((acc: Record<string, any>, skill: any) => {
     const category = skill.category || 'Other';
     if (!acc[category]) {
       acc[category] = [];
     }
     acc[category].push(skill);
     return acc;
-  }, {} as Record<string, typeof skills>);
+  }, {} as Record<string, any>);
 
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8" ref={ref}>
@@ -117,7 +118,7 @@ export default function Skills() {
 
         {/* Skills by Category */}
         <div className="space-y-16">
-          {Object.entries(skillsByCategory).map(([category, categorySkills]) => (
+          {Object.entries(skillsByCategory).map(([category, categorySkills]: [string, any]) => (
             <motion.div
               key={category}
               variants={itemVariants}

@@ -5,7 +5,8 @@ import { Briefcase, Code, Trophy, GraduationCap } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 
 export default function About() {
-  const { data: achievements } = useAchievements();
+  const achievementData = useAchievements() ?? {} as any;
+  const achievements = achievementData.data ?? [];
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -33,7 +34,7 @@ export default function About() {
     },
   };
 
-  const defaultAchievements = achievements && achievements.length > 0 ? achievements : [
+  const defaultAchievements = (achievements ?? []).length > 0 ? achievements : [
     {
       title: "Experience",
       value: "1+ Years",
@@ -118,7 +119,7 @@ export default function About() {
 
         {/* Achievements Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {defaultAchievements.map((achievement, index) => {
+          {defaultAchievements.map((achievement: any, index: number) => {
             const Icon = getIcon(achievement.icon);
             return (
               <motion.div

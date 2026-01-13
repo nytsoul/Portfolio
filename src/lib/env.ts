@@ -4,6 +4,9 @@
  */
 
 export const env = {
+  // Convex
+  convexUrl: import.meta.env.VITE_CONVEX_URL,
+
   // VLY Platform
   vlyAppId: import.meta.env.VITE_VLY_APP_ID,
   vlyMonitoringUrl: import.meta.env.VITE_VLY_MONITORING_URL,
