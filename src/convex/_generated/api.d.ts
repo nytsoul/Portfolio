@@ -10,6 +10,7 @@
 
 import type * as auth from "../auth.js";
 import type * as auth_emailOtp from "../auth/emailOtp.js";
+import type * as demo_data from "../demo_data.js";
 import type * as github from "../github.js";
 import type * as githubMutations from "../githubMutations.js";
 import type * as http from "../http.js";
@@ -26,6 +27,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   "auth/emailOtp": typeof auth_emailOtp;
+  demo_data: typeof demo_data;
   github: typeof github;
   githubMutations: typeof githubMutations;
   http: typeof http;
