@@ -16,6 +16,7 @@ export default defineConfig({
     sourcemap: false,
     // Optimize chunk splitting
     rollupOptions: {
+      external: ['@reduxjs/toolkit', 'redux'],
       output: {
         // Manual chunk splitting for better caching and lazy loading
         manualChunks: {
@@ -50,7 +51,6 @@ export default defineConfig({
           ],
           // Heavy optional libraries - separate chunks for better lazy loading
           'framer-motion': ['framer-motion'],
-          'three': ['three', '@react-three/fiber', '@react-three/drei'],
           'charts': ['recharts'],
           'forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
         },
@@ -77,7 +77,7 @@ export default defineConfig({
       '@convex-dev/auth/react',
     ],
     // Exclude heavy optional dependencies for faster dev server start
-    exclude: ['three', '@react-three/fiber', '@react-three/drei'],
+    exclude: [],
   },
   // Performance hints
   server: {

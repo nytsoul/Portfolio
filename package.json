@@ -9,6 +9,7 @@
     "server": "node server/server.js",
     "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
     "build": "tsc -b && vite build",
+    "start": "npm run build && node server/server.js",
     "lint": "eslint .",
     "format": "prettier --write .",
     "preview": "vite preview"
@@ -47,6 +48,7 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
+    "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/vite": "^4.1.17",
     "@types/three": "^0.181.0",
     "@vly-ai/integrations": "^0.6.1",
@@ -77,6 +79,7 @@
     "react-resizable-panels": "^3.0.6",
     "react-router": "^7.10.0",
     "recharts": "^3.5.1",
+    "redux": "^5.0.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
