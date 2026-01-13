@@ -34,30 +34,33 @@ export default function Hero({ profile, githubStats }: HeroProps) {
         animate="visible"
         className="max-w-6xl mx-auto w-full"
       >
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column - Profile */}
+        {/* Profile Section - Image Left, Info Right */}
+        <div className="grid lg:grid-cols-[auto_1fr] gap-8 lg:gap-12 items-start mb-12">
+          {/* Left Column - Profile Image Only */}
+          <motion.div variants={itemVariants} className="flex justify-center lg:justify-start">
+            <Avatar className="w-48 h-48 lg:w-56 lg:h-56 ring-4 ring-primary/20 ring-offset-4 ring-offset-background shadow-2xl shadow-primary/10">
+              <AvatarImage src={profile?.profileImage || "/profile.jpg"} className="object-cover" />
+              <AvatarFallback className="text-5xl font-bold bg-gradient-to-br from-primary to-primary/50">
+                {profile?.name?.split(" ").map((n: string) => n[0]).join("") || "NR"}
+              </AvatarFallback>
+            </Avatar>
+          </motion.div>
+
+          {/* Right Column - Name and Info */}
           <motion.div variants={itemVariants} className="space-y-6">
-            <div className="flex items-center gap-4">
-              <Avatar className="w-24 h-24 ring-2 ring-primary ring-offset-2 ring-offset-background">
-                <AvatarImage src={profile?.profileImage || "/profile.jpg"} />
-                <AvatarFallback className="text-2xl">
-                  {profile?.name?.split(" ").map((n: string) => n[0]).join("") || "NR"}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <h1 className="text-4xl lg:text-5xl font-bold text-foreground">
-                  {profile?.name || "Neshun R"}
-                </h1>
-                {profile?.location && (
-                  <div className="flex items-center gap-2 mt-2 text-muted-foreground">
-                    <MapPin className="w-4 h-4" />
-                    <span>{profile.location}</span>
-                  </div>
-                )}
-              </div>
+            <div>
+              <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground tracking-tight">
+                {profile?.name || "Neshun R"}
+              </h1>
+              {profile?.location && (
+                <div className="flex items-center gap-2 mt-3 text-muted-foreground text-lg">
+                  <MapPin className="w-5 h-5" />
+                  <span>{profile.location}</span>
+                </div>
+              )}
             </div>
 
-            <motion.div variants={itemVariants} className="min-h-[60px]">
+            <motion.div variants={itemVariants} className="min-h-[70px]">
               <TypeWriter
                 texts={[
                   "Full-stack developer passionate about AI",
@@ -68,19 +71,19 @@ export default function Hero({ profile, githubStats }: HeroProps) {
                 typingSpeed={50}
                 deletingSpeed={30}
                 pauseDuration={2500}
-                className="text-xl text-primary font-medium leading-relaxed"
+                className="text-2xl text-primary font-semibold leading-relaxed"
               />
             </motion.div>
 
-            <motion.p variants={itemVariants} className="text-foreground/90 leading-relaxed">
+            <motion.p variants={itemVariants} className="text-lg text-foreground/80 leading-relaxed max-w-2xl">
               {profile?.bio ||
                 "2nd-year CS Engineering student at SSN College of Engineering. Building robust systems and solving real-world problems with a focus on user experience and architectural thinking."}
             </motion.p>
 
             {/* Social Links */}
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
+            <motion.div variants={itemVariants} className="flex flex-wrap gap-3 pt-2">
               {profile?.github && (
-                <Button variant="outline" size="sm" asChild>
+                <Button variant="outline" size="default" asChild>
                   <a
                     href={`https://github.com/${profile.github}`}
                     target="_blank"
@@ -92,7 +95,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
                 </Button>
               )}
               {profile?.email && (
-                <Button variant="outline" size="sm" asChild>
+                <Button variant="outline" size="default" asChild>
                   <a href={`mailto:${profile.email}`}>
                     <Mail className="w-4 h-4 mr-2" />
                     Email
@@ -100,7 +103,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
                 </Button>
               )}
               {profile?.linkedin && (
-                <Button variant="outline" size="sm" asChild>
+                <Button variant="outline" size="default" asChild>
                   <a
                     href={profile.linkedin}
                     target="_blank"
@@ -112,7 +115,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
                 </Button>
               )}
               {profile?.website && (
-                <Button variant="outline" size="sm" asChild>
+                <Button variant="outline" size="default" asChild>
                   <a
                     href={profile.website}
                     target="_blank"
@@ -125,70 +128,73 @@ export default function Hero({ profile, githubStats }: HeroProps) {
               )}
             </motion.div>
           </motion.div>
-
-          {/* Right Column - GitHub Stats */}
-          <motion.div variants={itemVariants}>
-            <Card className="p-6 bg-card/50 backdrop-blur border-border">
-              <h3 className="text-xl font-semibold mb-6 text-foreground flex items-center gap-2">
-                <Github className="w-5 h-5 text-primary" />
-                GitHub Stats
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="bg-secondary/50 rounded-lg p-4 text-center"
-                >
-                  <div className="text-3xl font-bold text-primary">
-                    {githubStats?.publicRepos || 0}
-                  </div>
-                  <div className="text-sm text-muted-foreground mt-1">
-                    Public Repos
-                  </div>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="bg-secondary/50 rounded-lg p-4 text-center"
-                >
-                  <div className="text-3xl font-bold text-chart-2">
-                    {githubStats?.followers || 0}
-                  </div>
-                  <div className="text-sm text-muted-foreground mt-1">
-                    Followers
-                  </div>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="bg-secondary/50 rounded-lg p-4 text-center"
-                >
-                  <div className="text-3xl font-bold text-chart-3">
-                    {githubStats?.following || 0}
-                  </div>
-                  <div className="text-sm text-muted-foreground mt-1">
-                    Following
-                  </div>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="bg-secondary/50 rounded-lg p-4 text-center"
-                >
-                  <div className="text-3xl font-bold text-chart-4">
-                    {githubStats?.totalStars || 0}
-                  </div>
-                  <div className="text-sm text-muted-foreground mt-1">
-                    Total Stars
-                  </div>
-                </motion.div>
-              </div>
-
-              {githubStats?.lastUpdated && (
-                <div className="mt-4 text-xs text-muted-foreground text-center">
-                  Last updated:{" "}
-                  {new Date(githubStats.lastUpdated).toLocaleDateString()}
-                </div>
-              )}
-            </Card>
-          </motion.div>
         </div>
+
+        {/* GitHub Stats - Full Width Below */}
+        <motion.div variants={itemVariants} className="mt-12">
+          <Card className="p-8 bg-card/50 backdrop-blur border-border">
+            <h3 className="text-2xl font-bold mb-8 text-foreground flex items-center gap-3">
+              <Github className="w-6 h-6 text-primary" />
+              GitHub Statistics
+            </h3>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ type: "spring" as const, stiffness: 300 }}
+                className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-6 text-center border border-primary/20"
+              >
+                <div className="text-4xl lg:text-5xl font-bold text-primary mb-2">
+                  {githubStats?.publicRepos || 0}
+                </div>
+                <div className="text-sm font-medium text-muted-foreground">
+                  Public Repos
+                </div>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ type: "spring" as const, stiffness: 300 }}
+                className="bg-gradient-to-br from-chart-2/10 to-chart-2/5 rounded-xl p-6 text-center border border-chart-2/20"
+              >
+                <div className="text-4xl lg:text-5xl font-bold text-chart-2 mb-2">
+                  {githubStats?.followers || 0}
+                </div>
+                <div className="text-sm font-medium text-muted-foreground">
+                  Followers
+                </div>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ type: "spring" as const, stiffness: 300 }}
+                className="bg-gradient-to-br from-chart-3/10 to-chart-3/5 rounded-xl p-6 text-center border border-chart-3/20"
+              >
+                <div className="text-4xl lg:text-5xl font-bold text-chart-3 mb-2">
+                  {githubStats?.following || 0}
+                </div>
+                <div className="text-sm font-medium text-muted-foreground">
+                  Following
+                </div>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ type: "spring" as const, stiffness: 300 }}
+                className="bg-gradient-to-br from-chart-4/10 to-chart-4/5 rounded-xl p-6 text-center border border-chart-4/20"
+              >
+                <div className="text-4xl lg:text-5xl font-bold text-chart-4 mb-2">
+                  {githubStats?.totalStars || 0}
+                </div>
+                <div className="text-sm font-medium text-muted-foreground">
+                  Total Stars
+                </div>
+              </motion.div>
+            </div>
+
+            {githubStats?.lastUpdated && (
+              <div className="mt-6 text-sm text-muted-foreground text-center">
+                Last updated: {new Date(githubStats.lastUpdated).toLocaleDateString()}
+              </div>
+            )}
+          </Card>
+        </motion.div>
 
         {/* Scroll Indicator */}
         <motion.div
