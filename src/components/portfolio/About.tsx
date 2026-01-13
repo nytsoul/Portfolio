@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import { useAchievements } from "@/hooks/use-api";
 import { Card } from "@/components/ui/card";
 import { Briefcase, Code, Trophy, GraduationCap } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 
 export default function About() {
-  const achievements = useQuery(api.portfolio.getAchievements, {});
+  const { data: achievements } = useAchievements();
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -81,17 +80,18 @@ export default function About() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate={inView ? "visible" : "hidden"}
-      >
-        {/* Section Header */}
-        <motion.div variants={itemVariants} className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            About Me
-          </h2>
+    <div className="w-full px-4 sm:px-6 lg:px-8" ref={ref}>
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+        >
+          {/* Section Header */}
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
+              About Me
+            </h2>
           <div className="w-20 h-1 bg-primary mx-auto" />
         </motion.div>
 
@@ -187,7 +187,8 @@ export default function About() {
             </Card>
           </div>
         </motion.div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }

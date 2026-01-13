@@ -1,12 +1,23 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { DEMO_PROJECTS, DEMO_SKILLS, DEMO_ACHIEVEMENTS } from "./demo-data";
 
 // Profile queries and mutations
 export const getProfile = query({
   args: { userId: v.optional(v.id("users")) },
   handler: async (ctx, args) => {
-    const userId = args.userId || (await ctx.auth.getUserIdentity())?.subject;
-    if (!userId) return null;
+    let userId = args.userId;
+    
+    if (!userId) {
+      const identity = await ctx.auth.getUserIdentity();
+      if (identity) {
+        userId = identity.subject as any;
+      } else {
+        // Return null if no userId and not authenticated
+        // Frontend will use environment variables as fallback
+        return null;
+      }
+    }
 
     return await ctx.db
       .query("profile")
@@ -74,8 +85,27 @@ export const getProjects = query({
     featured: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
-    const userId = args.userId || (await ctx.auth.getUserIdentity())?.subject;
-    if (!userId) return [];
+    let userId = args.userId;
+    
+    if (!userId) {
+      const identity = await ctx.auth.getUserIdentity();
+      if (identity) {
+        userId = identity.subject as any;
+      } else {
+        // Return demo data when not authenticated
+        let filtered = DEMO_PROJECTS;
+        
+        if (args.category && args.category !== "all") {
+          filtered = filtered.filter((p) => p.category === args.category);
+        }
+        
+        if (args.featured !== undefined) {
+          filtered = filtered.filter((p) => p.featured === args.featured);
+        }
+        
+        return filtered.sort((a, b) => b.stars - a.stars);
+      }
+    }
 
     let projectsQuery = ctx.db
       .query("projects")
@@ -102,8 +132,18 @@ export const getProjects = query({
 export const getProjectCategories = query({
   args: { userId: v.optional(v.id("users")) },
   handler: async (ctx, args) => {
-    const userId = args.userId || (await ctx.auth.getUserIdentity())?.subject;
-    if (!userId) return [];
+    let userId = args.userId;
+    
+    if (!userId) {
+      const identity = await ctx.auth.getUserIdentity();
+      if (identity) {
+        userId = identity.subject as any;
+      } else {
+        // Return demo categories when not authenticated
+        const categories = new Set(DEMO_PROJECTS.map((p) => p.category));
+        return Array.from(categories).sort();
+      }
+    }
 
     const projects = await ctx.db
       .query("projects")
@@ -122,8 +162,23 @@ export const getSkills = query({
     category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const userId = args.userId || (await ctx.auth.getUserIdentity())?.subject;
-    if (!userId) return [];
+    let userId = args.userId;
+    
+    if (!userId) {
+      const identity = await ctx.auth.getUserIdentity();
+      if (identity) {
+        userId = identity.subject as any;
+      } else {
+        // Return demo data when not authenticated
+        let filtered = DEMO_SKILLS;
+        
+        if (args.category && args.category !== "all") {
+          filtered = filtered.filter((s) => s.category === args.category);
+        }
+        
+        return filtered.sort((a, b) => b.strength - a.strength);
+      }
+    }
 
     let skillsQuery = ctx.db
       .query("skills")
@@ -145,8 +200,18 @@ export const getSkills = query({
 export const getSkillCategories = query({
   args: { userId: v.optional(v.id("users")) },
   handler: async (ctx, args) => {
-    const userId = args.userId || (await ctx.auth.getUserIdentity())?.subject;
-    if (!userId) return [];
+    let userId = args.userId;
+    
+    if (!userId) {
+      const identity = await ctx.auth.getUserIdentity();
+      if (identity) {
+        userId = identity.subject as any;
+      } else {
+        // Return demo categories when not authenticated
+        const categories = new Set(DEMO_SKILLS.map((s) => s.category));
+        return Array.from(categories).sort();
+      }
+    }
 
     const skills = await ctx.db
       .query("skills")
@@ -162,8 +227,17 @@ export const getSkillCategories = query({
 export const getAchievements = query({
   args: { userId: v.optional(v.id("users")) },
   handler: async (ctx, args) => {
-    const userId = args.userId || (await ctx.auth.getUserIdentity())?.subject;
-    if (!userId) return [];
+    let userId = args.userId;
+    
+    if (!userId) {
+      const identity = await ctx.auth.getUserIdentity();
+      if (identity) {
+        userId = identity.subject as any;
+      } else {
+        // Return demo data when not authenticated
+        return DEMO_ACHIEVEMENTS.sort((a, b) => a.order - b.order);
+      }
+    }
 
     const achievements = await ctx.db
       .query("achievements")

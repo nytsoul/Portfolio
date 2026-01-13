@@ -40,7 +40,7 @@ export default function Navigation() {
           isScrolled ? "bg-card/80 backdrop-blur-lg border-b border-border" : ""
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <motion.div
               whileHover={{ scale: 1.05 }}

@@ -1,16 +1,25 @@
 import { motion } from "framer-motion";
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import Hero from "@/components/portfolio/Hero";
 import About from "@/components/portfolio/About";
 import Projects from "@/components/portfolio/Projects";
 import Skills from "@/components/portfolio/Skills";
 import Contact from "@/components/portfolio/Contact";
 import Navigation from "@/components/portfolio/Navigation";
+import { useProfile, useGitHubStats } from "@/hooks/use-api";
+import { useFallbackProfile, useFallbackGitHubStats } from "@/hooks/use-fallback-profile";
+import { useGitHubSync } from "@/hooks/use-github-sync";
 
 export default function Portfolio() {
-  const profile = useQuery(api.portfolio.getProfile, {});
-  const githubStats = useQuery(api.portfolio.getGitHubStats, {});
+  // Trigger GitHub sync on component mount
+  useGitHubSync();
+
+  // Fetch data from Express backend instead of Convex
+  const { data: dbProfile } = useProfile();
+  const { data: dbGithubStats } = useGitHubStats();
+
+  // Use fallback data from environment if API data isn't available
+  const profile = useFallbackProfile(dbProfile);
+  const githubStats = useFallbackGitHubStats(dbGithubStats);
 
   return (
     <div className="min-h-screen bg-background">

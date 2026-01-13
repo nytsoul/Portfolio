@@ -1,20 +1,13 @@
-import { api } from "@/convex/_generated/api";
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useConvexAuth, useQuery } from "convex/react";
+// Simple auth hook - authentication is handled by backend if needed
+// For now, using demo data without authentication
 
 export function useAuth() {
-  const { isLoading: isAuthLoading, isAuthenticated } = useConvexAuth();
-  const user = useQuery(api.users.currentUser);
-  const { signIn, signOut } = useAuthActions();
-
-  // Derive isLoading directly from the dependencies instead of managing separate state
-  const isLoading = isAuthLoading || user === undefined;
-
+  // Placeholder for future authentication implementation
   return {
-    isLoading,
-    isAuthenticated,
-    user,
-    signIn,
-    signOut,
+    isLoading: false,
+    isAuthenticated: false,
+    user: null,
+    signIn: async () => {},
+    signOut: async () => {},
   };
 }

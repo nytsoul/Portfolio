@@ -1,12 +1,39 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { useSkillCategories, useSkills } from "@/hooks/use-api";
 import { useInView } from "react-intersection-observer";
+const LOCAL_SKILLS = [
+  // Languages
+  { _id: "ts", name: "TypeScript", category: "Languages", strength: 95, icon: "🔷" },
+  { _id: "js", name: "JavaScript", category: "Languages", strength: 92, icon: "⚡" },
+  { _id: "py", name: "Python", category: "Languages", strength: 85, icon: "🐍" },
+  { _id: "java", name: "Java", category: "Languages", strength: 82, icon: "☕" },
+  { _id: "c", name: "C", category: "Languages", strength: 80, icon: "C" },
+  { _id: "dart", name: "Dart", category: "Languages", strength: 88, icon: "🎯" },
+  { _id: "html", name: "HTML5", category: "Languages", strength: 93, icon: "📄" },
+  { _id: "css", name: "CSS3", category: "Languages", strength: 91, icon: "🎨" },
+
+  // Tools
+  { _id: "react", name: "React", category: "Tools", strength: 90, icon: "⚛️" },
+  { _id: "next", name: "Next.js", category: "Tools", strength: 88, icon: "➡️" },
+  { _id: "tailwind", name: "Tailwind CSS", category: "Tools", strength: 92, icon: "🌬️" },
+
+  { _id: "node", name: "Node.js", category: "Tools", strength: 86, icon: "🟢" },
+  { _id: "express", name: "Express.js", category: "Tools", strength: 84, icon: "🚀" },
+  { _id: "rest", name: "REST APIs", category: "Tools", strength: 88, icon: "🔗" },
+  { _id: "mongoose", name: "Mongoose", category: "Tools", strength: 83, icon: "🍃" },
+  { _id: "firebase", name: "Firebase", category: "Tools", strength: 85, icon: "🔥" },
+
+  { _id: "flutter", name: "Flutter", category: "Tools", strength: 82, icon: "🦋" },
+  { _id: "rn", name: "React Native", category: "Tools", strength: 80, icon: "📱" },
+
+  { _id: "mongo", name: "MongoDB", category: "Tools", strength: 87, icon: "🍀" },
+  { _id: "postgres", name: "PostgreSQL", category: "Tools", strength: 78, icon: "🐘" },
+
+  { _id: "git", name: "Git", category: "Tools", strength: 90, icon: "🔧" },
+  { _id: "github", name: "GitHub", category: "Tools", strength: 92, icon: "🐙" },
+  { _id: "docker", name: "Docker", category: "Tools", strength: 75, icon: "🐳" },
+];
 
 export default function Skills() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -15,10 +42,9 @@ export default function Skills() {
     threshold: 0.1,
   });
 
-  const categories = useQuery(api.portfolio.getSkillCategories, {});
-  const skills = useQuery(api.portfolio.getSkills, {
-    category: selectedCategory === "all" ? undefined : selectedCategory,
-  });
+  const { data: categories } = useSkillCategories();
+  const skills = LOCAL_SKILLS;
+
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -29,11 +55,10 @@ export default function Skills() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, x: -50, scale: 0.9 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
-      x: 0,
-      scale: 1,
+      y: 0,
       transition: {
         type: "spring" as const,
         stiffness: 120,
@@ -42,119 +67,165 @@ export default function Skills() {
     },
   };
 
+  const skillItemVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring" as const,
+        stiffness: 150,
+        damping: 12,
+      }
+    },
+  };
+
   const allCategories = ["all", ...(categories || [])];
 
+  // Group skills by category
+  const skillsByCategory = (skills || []).reduce((acc, skill) => {
+    const category = skill.category || 'Other';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(skill);
+    return acc;
+  }, {} as Record<string, typeof skills>);
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate={inView ? "visible" : "hidden"}
-      >
-        {/* Section Header */}
-        <motion.div variants={itemVariants} className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            Skills & Technologies
-          </h2>
-          <div className="w-20 h-1 bg-primary mx-auto mb-6" />
+    <div className="w-full px-4 sm:px-6 lg:px-8" ref={ref}>
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+        >
+          {/* Section Header */}
+          <motion.div variants={itemVariants} className="text-center mb-16">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <span className="text-4xl">##</span>
+            <span className="text-4xl">⚙️</span>
+            <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
+              Skills and Language
+            </h2>
+          </div>
+          <div className="w-20 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6" />
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Technologies and tools I've worked with, automatically detected from
-            my projects. Strength is calculated based on usage frequency and
-            recency.
+            A collection of technologies and tools I've mastered throughout my journey
           </p>
         </motion.div>
 
-        {/* Category Filter */}
-        <motion.div
-          variants={itemVariants}
-          className="flex flex-wrap justify-center gap-2 mb-12"
-        >
-          {allCategories.map((category) => (
-            <Button
+        {/* Skills by Category */}
+        <div className="space-y-16">
+          {Object.entries(skillsByCategory).map(([category, categorySkills]) => (
+            <motion.div
               key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              onClick={() => setSelectedCategory(category)}
-              className="capitalize"
+              variants={itemVariants}
+              className="space-y-6"
             >
-              {category}
-            </Button>
-          ))}
-        </motion.div>
+              {/* Category Header */}
+              <div className="flex items-center gap-3">
+                <h3 className="text-2xl font-bold text-foreground">{category}</h3>
+                <div className="flex-1 h-px bg-gradient-to-r from-primary/50 to-transparent" />
+              </div>
 
-        {/* Skills Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {skills?.map((skill) => (
-            <motion.div key={skill._id} variants={itemVariants}>
-              <Card className="p-6 bg-card/50 backdrop-blur border-border">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-foreground mb-1">
-                      {skill.name}
-                    </h3>
-                    <Badge variant="secondary" className="text-xs">
-                      {skill.category}
-                    </Badge>
-                  </div>
-                  <div className="text-2xl font-bold text-primary">
-                    {skill.strength}%
-                  </div>
-                </div>
+              {/* Skills Grid for Category */}
+              <motion.div
+                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: { staggerChildren: 0.1 },
+                  },
+                }}
+                initial="hidden"
+                animate={inView ? "visible" : "hidden"}
+              >
+                {categorySkills.map((skill) => (
+                  <motion.div
+                    key={skill._id}
+                    variants={skillItemVariants}
+                    className="flex flex-col items-center"
+                  >
+                    <motion.div
+                      className="group relative flex flex-col items-center justify-center w-20 h-20 cursor-pointer mb-3"
+                      whileHover={{ scale: 1.1, y: -8 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {/* Skill Icon Container */}
+                      <div className="relative w-20 h-20 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent rounded-2xl flex items-center justify-center border border-primary/30 shadow-lg group-hover:shadow-primary/30 transition-all duration-300 group-hover:border-primary/60">
+                        <span className="text-4xl">
+                          {(skill as any).icon || '⚡'}
+                        </span>
 
-                {/* Strength Bar */}
-                <div className="mb-4">
-                  <Progress value={skill.strength} className="h-2" />
-                </div>
+                        {/* Glow Effect on Hover */}
+                        <div className="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg -z-10" />
+                      </div>
 
-                {/* Usage Info */}
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Used in {skill.usageCount} projects</span>
-                  <span>
-                    Last used:{" "}
-                    {new Date(skill.lastUsed).toLocaleDateString("en-US", {
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </span>
-                </div>
-              </Card>
+                      {/* Strength Badge */}
+                      <div className="absolute -top-2 -right-2 flex items-center justify-center w-6 h-6 bg-gradient-to-br from-primary to-primary/70 text-white text-xs font-bold rounded-full shadow-lg">
+                        {Math.round(skill.strength / 10)}
+                      </div>
+                    </motion.div>
+
+                    {/* Skill Name and Strength */}
+                    <div className="text-center">
+                      <p className="text-sm font-semibold text-foreground">
+                        {skill.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {skill.strength}%
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
             </motion.div>
           ))}
         </div>
 
         {/* Empty State */}
-        {skills?.length === 0 && (
+        {!skills || skills.length === 0 && (
           <motion.div
             variants={itemVariants}
             className="text-center py-12 text-muted-foreground"
           >
-            <p>No skills found in this category.</p>
+            <p>No skills found. Let me sync your GitHub data!</p>
           </motion.div>
         )}
 
-        {/* Legend */}
+        {/* Stats Footer */}
         <motion.div
           variants={itemVariants}
-          className="mt-12 p-6 bg-card/30 backdrop-blur rounded-lg border border-border"
+          className="mt-20 p-8 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-2xl border border-primary/20"
         >
-          <h4 className="text-sm font-semibold text-foreground mb-3">
-            How skill strength is calculated
-          </h4>
-          <ul className="text-sm text-muted-foreground space-y-2">
-            <li>
-              • <strong>Usage Frequency:</strong> Skills used in more projects
-              get higher scores
-            </li>
-            <li>
-              • <strong>Recency:</strong> Recently used skills are weighted more
-              heavily
-            </li>
-            <li>
-              • <strong>Relative Strength:</strong> Scores are normalized to show
-              your strongest skills at 100%
-            </li>
-          </ul>
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div>
+              <p className="text-3xl font-bold text-primary mb-2">
+                {skills?.length || 0}
+              </p>
+              <p className="text-muted-foreground">Total Skills</p>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-primary mb-2">
+                {Math.round(
+                  ((skills?.reduce((sum, s) => sum + s.strength, 0) || 0) /
+                    (skills?.length || 1)) || 0
+                )}
+              </p>
+              <p className="text-muted-foreground">Average Strength</p>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-primary mb-2">
+                {Object.keys(skillsByCategory).length}
+              </p>
+              <p className="text-muted-foreground">Categories</p>
+            </div>
+          </div>
         </motion.div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }

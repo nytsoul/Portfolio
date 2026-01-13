@@ -56,17 +56,18 @@ export default function Contact({ profile }: ContactProps) {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate={inView ? "visible" : "hidden"}
-      >
-        {/* Section Header */}
-        <motion.div variants={itemVariants} className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            Get In Touch
-          </h2>
+    <div className="w-full px-4 sm:px-6 lg:px-8" ref={ref}>
+      <div className="max-w-5xl mx-auto">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+        >
+          {/* Section Header */}
+          <motion.div variants={itemVariants} className="text-center mb-12">
+            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
+              Get In Touch
+            </h2>
           <div className="w-20 h-1 bg-primary mx-auto mb-6" />
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             I'm always open to discussing new projects, opportunities, or just
@@ -151,7 +152,8 @@ export default function Contact({ profile }: ContactProps) {
             rights reserved.
           </p>
         </motion.div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }
