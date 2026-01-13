@@ -18,8 +18,6 @@
     /* Linting */
     "strict": false,
     "noImplicitAny": false,
-    "incremental": true,
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "erasableSyntaxOnly": true,
