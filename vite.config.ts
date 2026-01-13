@@ -16,9 +16,9 @@ export default defineConfig({
     sourcemap: false,
     // Reduce memory usage
     minify: 'esbuild',
-    cssMinify: true,
+    cssMinify: false,
     // Increase chunk size warning limit for better chunking
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 5000,
     // Target modern browsers for better optimization
     target: 'esnext',
     // Optimize chunk splitting

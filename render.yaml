@@ -3,11 +3,11 @@ services:
     name: portfolio
     env: node
     plan: free
-    buildCommand: npm run build
-    startCommand: node server/server.js
+    buildCommand: NODE_OPTIONS="--max-old-space-size=4096" npm run build
+    startCommand: bash start.sh
     envVars:
       - key: NODE_OPTIONS
-        value: --max-old-space-size=2048
+        value: --max-old-space-size=4096
       - key: NODE_ENV
         value: production
       - key: NPM_FLAGS
