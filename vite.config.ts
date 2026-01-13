@@ -17,6 +17,10 @@ export default defineConfig({
     // Reduce memory usage
     minify: 'esbuild',
     cssMinify: true,
+    // Increase chunk size warning limit for better chunking
+    chunkSizeWarningLimit: 1000,
+    // Target modern browsers for better optimization
+    target: 'esnext',
     // Optimize chunk splitting
     rollupOptions: {
       external: ['@reduxjs/toolkit', 'redux'],
@@ -63,12 +67,6 @@ export default defineConfig({
         assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
-    // Increase chunk size warning limit for better chunking
-    chunkSizeWarningLimit: 1000,
-    // Target modern browsers for better optimization
-    target: 'esnext',
-    // Minify options - using esbuild (faster than terser)
-    minify: 'esbuild',
   },
   // Optimize dependencies
   optimizeDeps: {
