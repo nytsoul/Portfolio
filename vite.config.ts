@@ -14,6 +14,9 @@ export default defineConfig({
   build: {
     // Enable source maps for better debugging (disable in production if needed)
     sourcemap: false,
+    // Reduce memory usage
+    minify: 'esbuild',
+    cssMinify: true,
     // Optimize chunk splitting
     rollupOptions: {
       external: ['@reduxjs/toolkit', 'redux'],

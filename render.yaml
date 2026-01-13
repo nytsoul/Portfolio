@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: portfolio
+    env: node
+    plan: free
+    buildCommand: pnpm run build
+    startCommand: node server/server.js
+    envVars:
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=2048
+      - key: NODE_ENV
+        value: production
+    routes:
+      - path: /
+        matchType: prefix
