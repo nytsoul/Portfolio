@@ -64,15 +64,13 @@ export default function Contact({ profile }: ContactProps) {
       >
         {/* Section Header */}
         <motion.div variants={itemVariants} className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4 flex items-center justify-center gap-3">
-            <span></span>
+          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
             Get In Touch
-            <span></span>
           </h2>
           <div className="w-20 h-1 bg-primary mx-auto mb-6" />
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             I'm always open to discussing new projects, opportunities, or just
-            having a chat about technology. Feel free to reach out! 
+            having a chat about technology. Feel free to reach out!
           </p>
         </motion.div>
 
