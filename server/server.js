@@ -44,11 +44,14 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const HOST = '0.0.0.0';
+
+app.listen(PORT, HOST, () => {
   console.log(`
 ╭──────────────────────────────────────╮
 │  Portfolio Backend Server Running    │
 │  Port: ${PORT}
+│  Host: ${HOST}
 │  MongoDB: ${mongoUri}
 │  API Base: http://localhost:${PORT}/api
 ╰──────────────────────────────────────╯

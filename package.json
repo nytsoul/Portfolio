@@ -8,8 +8,8 @@
     "dev": "vite",
     "server": "node server/server.js",
     "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
-    "build": "tsc -b && vite build",
-    "start": "bash start.sh",
+    "build": "node --max-old-space-size=4096 ./node_modules/.bin/tsc -b && node --max-old-space-size=4096 ./node_modules/.bin/vite build",
+    "start": "node server/server.js",
     "lint": "eslint .",
     "format": "prettier --write .",
     "preview": "vite preview"

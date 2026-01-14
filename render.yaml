@@ -3,12 +3,18 @@ services:
     name: portfolio
     env: node
     plan: free
-    buildCommand: NODE_OPTIONS="--max-old-space-size=4096" npm run build
-    startCommand: bash start.sh
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: node server/server.js
     envVars:
-      - key: NODE_OPTIONS
-        value: --max-old-space-size=4096
       - key: NODE_ENV
         value: production
-      - key: NPM_FLAGS
-        value: --legacy-peer-deps
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=4096
+      - key: PORT
+        value: "10000"
+      - key: VITE_API_BASE_URL
+        value: "https://your-render-url.onrender.com/api"
+    routes:
+      - path: /
+        matchType: prefix
