@@ -4,6 +4,7 @@ import About from "@/components/portfolio/About";
 import Projects from "@/components/portfolio/Projects";
 import Skills from "@/components/portfolio/Skills";
 import Contact from "@/components/portfolio/Contact";
+import Footer from "@/components/portfolio/Footer";
 import Navigation from "@/components/portfolio/Navigation";
 import { useProfile, useGitHubStats } from "@/hooks/use-api";
 import { useFallbackProfile, useFallbackGitHubStats } from "@/hooks/use-fallback-profile";
@@ -85,6 +86,9 @@ export default function Portfolio() {
           <Contact profile={profile} />
         </motion.section>
       </main>
+
+      {/* Footer */}
+      <Footer profile={profile} />
 
       {/* Animated background gradient */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">

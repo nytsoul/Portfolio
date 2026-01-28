@@ -4,9 +4,6 @@
  */
 
 export const env = {
-  // Convex
-  convexUrl: import.meta.env.VITE_CONVEX_URL,
-
   // VLY Platform
   vlyAppId: import.meta.env.VITE_VLY_APP_ID,
   vlyMonitoringUrl: import.meta.env.VITE_VLY_MONITORING_URL,
@@ -140,7 +137,6 @@ export const env = {
 // Type-safe environment variable checker
 export function checkRequiredEnvVars() {
   const required = [
-    'VITE_CONVEX_URL',
     'VITE_GITHUB_USERNAME',
   ];
 
@@ -158,7 +154,6 @@ if (env.isDevelopment && env.debugMode) {
   console.log('Environment Configuration:', {
     mode: import.meta.env.MODE,
     version: env.appVersion,
-    convexUrl: env.convexUrl,
     githubUsername: env.github.username,
     features: env.features,
   });

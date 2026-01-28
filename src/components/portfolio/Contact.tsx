@@ -68,90 +68,70 @@ export default function Contact({ profile }: ContactProps) {
             <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
               Get In Touch
             </h2>
-          <div className="w-20 h-1 bg-primary mx-auto mb-6" />
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            I'm always open to discussing new projects, opportunities, or just
-            having a chat about technology. Feel free to reach out!
-          </p>
-        </motion.div>
-
-        {/* Contact Cards */}
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
-          {contactMethods.map((method, index) => {
-            const Icon = method.icon;
-            return (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                whileHover={{ scale: 1.02, y: -5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <Card className="p-6 bg-card/50 backdrop-blur border-border">
-                  <a
-                    href={method.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-4 group"
-                  >
-                    <div
-                      className={`p-3 bg-secondary/50 rounded-lg group-hover:bg-secondary transition-colors`}
-                    >
-                      <Icon className={`w-6 h-6 ${method.color}`} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-sm text-muted-foreground mb-1">
-                        {method.label}
-                      </div>
-                      <div className="text-foreground font-medium group-hover:text-primary transition-colors">
-                        {method.value}
-                      </div>
-                    </div>
-                    <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </a>
-                </Card>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* CTA Section */}
-        <motion.div variants={itemVariants}>
-          <Card className="p-8 bg-gradient-to-br from-primary/10 via-chart-2/10 to-chart-3/10 border-border text-center">
-            <h3 className="text-2xl font-bold text-foreground mb-4">
-              Let's Build Something Amazing
-            </h3>
-            <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-              Whether you have a project in mind, need technical consultation, or
-              just want to connect, I'd love to hear from you.
+            <div className="w-20 h-1 bg-primary mx-auto mb-6" />
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              I'm always open to discussing new projects, opportunities, or just
+              having a chat about technology. Feel free to reach out!
             </p>
-            <Button size="lg" asChild>
-              <a href={`mailto:${profile?.email || "neshun7413@gmail.com"}`}>
-                <Mail className="w-5 h-5 mr-2" />
-                Send Me an Email
-              </a>
-            </Button>
-          </Card>
-        </motion.div>
+          </motion.div>
 
-        {/* Footer */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-12 pt-8 border-t border-border text-center text-sm text-muted-foreground"
-        >
-          <p>
-            Built with React, TypeScript, Tailwind CSS, and Convex
-          </p>
-          <p className="mt-2">
-            {profile?.location && (
-              <>
-                <MapPin className="w-4 h-4 inline mr-1" />
-                {profile.location} •{" "}
-              </>
-            )}
-            © {new Date().getFullYear()} {profile?.name || "Neshun R"}. All
-            rights reserved.
-          </p>
-        </motion.div>
+          {/* Contact Cards */}
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            {contactMethods.map((method, index) => {
+              const Icon = method.icon;
+              return (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.02, y: -5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Card className="p-6 bg-card/50 backdrop-blur border-border">
+                    <a
+                      href={method.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-4 group"
+                    >
+                      <div
+                        className={`p-3 bg-secondary/50 rounded-lg group-hover:bg-secondary transition-colors`}
+                      >
+                        <Icon className={`w-6 h-6 ${method.color}`} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-sm text-muted-foreground mb-1">
+                          {method.label}
+                        </div>
+                        <div className="text-foreground font-medium group-hover:text-primary transition-colors">
+                          {method.value}
+                        </div>
+                      </div>
+                      <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* CTA Section */}
+          <motion.div variants={itemVariants}>
+            <Card className="p-8 bg-gradient-to-br from-primary/10 via-chart-2/10 to-chart-3/10 border-border text-center">
+              <h3 className="text-2xl font-bold text-foreground mb-4">
+                Let's Build Something Amazing
+              </h3>
+              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+                Whether you have a project in mind, need technical consultation, or
+                just want to connect, I'd love to hear from you.
+              </p>
+              <Button size="lg" asChild>
+                <a href={`mailto:${profile?.email || "neshun7413@gmail.com"}`}>
+                  <Mail className="w-5 h-5 mr-2" />
+                  Send Me an Email
+                </a>
+              </Button>
+            </Card>
+          </motion.div>
         </motion.div>
       </div>
     </div>
