@@ -9,6 +9,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@reduxjs/toolkit": path.resolve(__dirname, "./node_modules/@reduxjs/toolkit"),
     },
   },
   build: {
@@ -72,6 +73,8 @@ export default defineConfig({
       'react',
       'react-dom',
       'react-router',
+      '@reduxjs/toolkit',
+      'redux',
     ],
     // Exclude heavy optional dependencies for faster dev server start
     exclude: [],
