@@ -112,8 +112,8 @@ export const env = {
   },
 
   // Development
-  isDevelopment: import.meta.env.NODE_ENV === 'development',
-  isProduction: import.meta.env.NODE_ENV === 'production',
+  isDevelopment: import.meta.env.DEV,
+  isProduction: import.meta.env.PROD,
   appVersion: import.meta.env.VITE_APP_VERSION || '1.0.0',
   buildDate: import.meta.env.VITE_BUILD_DATE,
   debugMode: import.meta.env.VITE_DEBUG_MODE === 'true',

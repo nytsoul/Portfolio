@@ -18,7 +18,6 @@ export default defineConfig({
     minify: 'esbuild',
     // Optimize chunk splitting
     rollupOptions: {
-      external: ['@reduxjs/toolkit', 'redux'],
       output: {
         // Manual chunk splitting for better caching and lazy loading
         manualChunks: {
@@ -73,8 +72,6 @@ export default defineConfig({
       'react',
       'react-dom',
       'react-router',
-      'convex',
-      '@convex-dev/auth/react',
     ],
     // Exclude heavy optional dependencies for faster dev server start
     exclude: [],
