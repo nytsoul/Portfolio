@@ -4,35 +4,43 @@ import { useSkillCategories, useSkills } from "@/hooks/use-api";
 import { useInView } from "react-intersection-observer";
 const LOCAL_SKILLS = [
   // Languages
-  { _id: "ts", name: "TypeScript", category: "Languages", strength: 95, icon: "🔷" },
-  { _id: "js", name: "JavaScript", category: "Languages", strength: 92, icon: "⚡" },
-  { _id: "py", name: "Python", category: "Languages", strength: 85, icon: "🐍" },
-  { _id: "java", name: "Java", category: "Languages", strength: 82, icon: "☕" },
-  { _id: "c", name: "C", category: "Languages", strength: 80, icon: "C" },
-  { _id: "dart", name: "Dart", category: "Languages", strength: 88, icon: "🎯" },
   { _id: "html", name: "HTML5", category: "Languages", strength: 93, icon: "📄" },
   { _id: "css", name: "CSS3", category: "Languages", strength: 91, icon: "🎨" },
+  { _id: "js", name: "JavaScript", category: "Languages", strength: 92, icon: "⚡" },
+  { _id: "ts", name: "TypeScript", category: "Languages", strength: 95, icon: "🔷" },
+  { _id: "java", name: "Java", category: "Languages", strength: 82, icon: "☕" },
+  { _id: "py", name: "Python", category: "Languages", strength: 85, icon: "🐍" },
+  { _id: "c", name: "C", category: "Languages", strength: 80, icon: "⚙️" },
+  { _id: "cpp", name: "C++", category: "Languages", strength: 78, icon: "🔧" },
 
-  // Tools
-  { _id: "react", name: "React", category: "Tools", strength: 90, icon: "⚛️" },
-  { _id: "next", name: "Next.js", category: "Tools", strength: 88, icon: "➡️" },
-  { _id: "tailwind", name: "Tailwind CSS", category: "Tools", strength: 92, icon: "🌬️" },
+  // Frontend
+  { _id: "react", name: "React", category: "Frontend", strength: 90, icon: "⚛️" },
+  { _id: "next", name: "Next.js", category: "Frontend", strength: 88, icon: "➡️" },
+  { _id: "tailwind", name: "Tailwind CSS", category: "Frontend", strength: 92, icon: "🌬️" },
+  { _id: "bootstrap", name: "Bootstrap", category: "Frontend", strength: 85, icon: "🅱️" },
 
-  { _id: "node", name: "Node.js", category: "Tools", strength: 86, icon: "🟢" },
-  { _id: "express", name: "Express.js", category: "Tools", strength: 84, icon: "🚀" },
-  { _id: "rest", name: "REST APIs", category: "Tools", strength: 88, icon: "🔗" },
-  { _id: "mongoose", name: "Mongoose", category: "Tools", strength: 83, icon: "🍃" },
-  { _id: "firebase", name: "Firebase", category: "Tools", strength: 85, icon: "🔥" },
+  // Backend
+  { _id: "node", name: "Node.js", category: "Backend", strength: 86, icon: "🟢" },
+  { _id: "express", name: "Express.js", category: "Backend", strength: 84, icon: "🚀" },
 
-  { _id: "flutter", name: "Flutter", category: "Tools", strength: 82, icon: "🦋" },
-  { _id: "rn", name: "React Native", category: "Tools", strength: 80, icon: "📱" },
+  // Databases
+  { _id: "mysql", name: "MySQL", category: "Databases", strength: 85, icon: "🐬" },
+  { _id: "mongo", name: "MongoDB", category: "Databases", strength: 87, icon: "🍀" },
+  { _id: "postgres", name: "PostgreSQL", category: "Databases", strength: 78, icon: "🐘" },
+  { _id: "sqlite", name: "SQLite", category: "Databases", strength: 82, icon: "💾" },
+  { _id: "supabase", name: "Supabase", category: "Databases", strength: 80, icon: "⚡" },
 
-  { _id: "mongo", name: "MongoDB", category: "Tools", strength: 87, icon: "🍀" },
-  { _id: "postgres", name: "PostgreSQL", category: "Tools", strength: 78, icon: "🐘" },
+  // Dev Tools
+  { _id: "git", name: "Git", category: "Dev Tools", strength: 90, icon: "🔧" },
+  { _id: "github", name: "GitHub", category: "Dev Tools", strength: 92, icon: "🐙" },
+  { _id: "vscode", name: "VS Code", category: "Dev Tools", strength: 88, icon: "💻" },
+  { _id: "linux", name: "Linux", category: "Dev Tools", strength: 75, icon: "🐧" },
 
-  { _id: "git", name: "Git", category: "Tools", strength: 90, icon: "🔧" },
-  { _id: "github", name: "GitHub", category: "Tools", strength: 92, icon: "🐙" },
-  { _id: "docker", name: "Docker", category: "Tools", strength: 75, icon: "🐳" },
+  // Additional Tools & Frameworks
+  { _id: "docker", name: "Docker", category: "Dev Tools", strength: 75, icon: "🐳" },
+  { _id: "firebase", name: "Firebase", category: "Backend", strength: 85, icon: "🔥" },
+  { _id: "rest", name: "REST APIs", category: "Backend", strength: 88, icon: "🔗" },
+  { _id: "mongoose", name: "Mongoose", category: "Backend", strength: 83, icon: "🍃" },
 ];
 
 export default function Skills() {
@@ -43,7 +51,7 @@ export default function Skills() {
   });
 
   const categoriesData = useSkillCategories() ?? {} as any;
-  const categories = categoriesData.data ?? [];
+  const categories = ["Languages", "Frontend", "Backend", "Databases", "Dev Tools"];
   const skills = LOCAL_SKILLS ?? [];
 
 

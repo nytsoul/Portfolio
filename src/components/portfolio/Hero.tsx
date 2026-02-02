@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Github, Mail, Linkedin, MapPin, ExternalLink } from "lucide-react";
+import { Github, Mail, Linkedin, MapPin, ExternalLink, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -63,10 +63,11 @@ export default function Hero({ profile, githubStats }: HeroProps) {
             <motion.div variants={itemVariants} className="min-h-[70px]">
               <TypeWriter
                 texts={[
+                  "Engineering Student from India 🇮🇳",
                   "Full-stack developer passionate about AI",
                   "Building scalable and secure systems",
                   "Cybersecurity enthusiast and problem solver",
-                  "Creating innovative tech solutions",
+                  "\"Consistency beats motivation.\"",
                 ]}
                 typingSpeed={50}
                 deletingSpeed={30}
@@ -111,6 +112,18 @@ export default function Hero({ profile, githubStats }: HeroProps) {
                   >
                     <Linkedin className="w-4 h-4 mr-2" />
                     LinkedIn
+                  </a>
+                </Button>
+              )}
+              {profile?.instagram && (
+                <Button variant="outline" size="default" asChild>
+                  <a
+                    href={profile.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Instagram className="w-4 h-4 mr-2" />
+                    Instagram
                   </a>
                 </Button>
               )}

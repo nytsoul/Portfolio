@@ -1,14 +1,16 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useProjectCategories, useProjects } from "@/hooks/use-api";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, Github, Star, GitFork } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { ExternalLink, Github, Star, GitFork, Search, X } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 
 export default function Projects() {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -20,6 +22,19 @@ export default function Projects() {
     category: selectedCategory === "all" ? undefined : selectedCategory,
   }) ?? {} as any;
   const projects = projectsData.data ?? [];
+
+  // Filter projects based on search query
+  const filteredProjects = useMemo(() => {
+    if (!searchQuery.trim()) return projects;
+    
+    const query = searchQuery.toLowerCase();
+    return projects?.filter((project: any) => 
+      project.name?.toLowerCase().includes(query) ||
+      project.description?.toLowerCase().includes(query) ||
+      project.languages?.some((lang: string) => lang.toLowerCase().includes(query)) ||
+      project.topics?.some((topic: string) => topic.toLowerCase().includes(query))
+    ) ?? [];
+  }, [projects, searchQuery]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -66,6 +81,28 @@ export default function Projects() {
           </p>
         </motion.div>
 
+        {/* Search Bar */}
+        <motion.div variants={itemVariants} className="max-w-xl mx-auto mb-8">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search projects by name, language, or topic..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-10 glass-light"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        </motion.div>
+
         {/* Category Filter */}
         <motion.div
           variants={itemVariants}
@@ -85,7 +122,7 @@ export default function Projects() {
 
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects?.map((project: any, index: number) => (
+          {filteredProjects?.map((project: any, index: number) => (
             <motion.div
               key={project._id}
               variants={itemVariants}

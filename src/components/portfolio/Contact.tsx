@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail, Github, Linkedin, ExternalLink, MapPin } from "lucide-react";
+import { Mail, Github, Linkedin, ExternalLink, MapPin, Instagram, Code } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 
 interface ContactProps {
@@ -45,6 +45,20 @@ export default function Contact({ profile }: ContactProps) {
       value: "Connect with me",
       href: profile?.linkedin || "#",
       color: "text-chart-2",
+    },
+    {
+      icon: Instagram,
+      label: "Instagram",
+      value: "@nyt__soul",
+      href: profile?.instagram || "https://instagram.com/nyt__soul",
+      color: "text-chart-5",
+    },
+    {
+      icon: Code,
+      label: "CodeForces",
+      value: "nytsoul",
+      href: `https://codeforces.com/profile/${import.meta.env.VITE_CODEFORCES_USERNAME || "nytsoul"}`,
+      color: "text-chart-3",
     },
     {
       icon: ExternalLink,

@@ -1,50 +1,23 @@
-import { motion } from "framer-motion";
-import { useAchievements } from "@/hooks/use-api";
 import { Card } from "@/components/ui/card";
 import { Briefcase, Code, Trophy, GraduationCap } from "lucide-react";
-import { useInView } from "react-intersection-observer";
+import GitHubStats from "./GitHubStats";
+import CompetitiveProgramming from "./CompetitiveProgramming";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function About() {
-  const achievementData = useAchievements() ?? {} as any;
-  const achievements = achievementData.data ?? [];
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.1 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 40, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring" as const,
-        stiffness: 100,
-        damping: 15,
-      }
-    },
-  };
+  const achievements = [];
 
   const defaultAchievements = (achievements ?? []).length > 0 ? achievements : [
     {
       title: "Experience",
-      value: "1+ Years",
+      value: "2+ Years",
       description: "Building full-stack applications",
       icon: "Briefcase",
       order: 0,
     },
     {
       title: "Projects",
-      value: "10 Done",
+      value: "30+ Done",
       description: "Completed projects",
       icon: "Code",
       order: 1,
@@ -81,53 +54,108 @@ export default function About() {
   };
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8" ref={ref}>
+    <div className="w-full px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-        >
+        <div>
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
+          <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
               About Me
             </h2>
-          <div className="w-20 h-1 bg-primary mx-auto" />
-        </motion.div>
+            <div className="w-20 h-1 bg-primary mx-auto" />
+          </div>
 
         {/* About Content */}
-        <motion.div variants={itemVariants} className="mb-12">
-          <Card className="p-8 bg-card/50 backdrop-blur border-border">
-            <p className="text-lg text-foreground/90 leading-relaxed">
-              I'm a 2nd-year Computer Science Engineering student at SSN College
-              of Engineering, Chennai. My passion lies in building robust,
-              scalable systems that solve real-world problems. I combine
-              architectural thinking with a strong focus on user experience,
-              ensuring that the solutions I create are both powerful and
-              intuitive.
-            </p>
-            <p className="text-lg text-foreground/90 leading-relaxed mt-4">
-              With expertise spanning full-stack development, AI integration,
-              and cybersecurity, I'm constantly pushing the boundaries of what's
-              possible with modern technology. I believe in writing clean,
-              maintainable code and following best practices to deliver
-              high-quality software.
-            </p>
-          </Card>
-        </motion.div>
+        <div className="mb-16">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            {/* Main Bio */}
+            <div className="space-y-6">
+              <Card className="p-8 bg-gradient-to-br from-card/80 to-card/40 backdrop-blur border-primary/20">
+                <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <GraduationCap className="w-6 h-6 text-primary" />
+                  </div>
+                  Who I Am
+                </h3>
+                <div className="space-y-4 text-foreground/90 leading-relaxed">
+                  <p className="text-lg">
+                    Hi! I'm <span className="font-semibold text-primary">Neshun R</span>, a passionate 2nd-year Computer Science Engineering student at 
+                    <span className="font-medium"> SSN College of Engineering, Chennai</span>. 
+                    I'm from India 🇮🇳 and I believe in the philosophy that <span className="italic text-chart-3">"Consistency beats motivation."</span>
+                  </p>
+                  <p>
+                    My journey in technology started with a curiosity about how things work, and has evolved into a deep passion for 
+                    building robust, scalable systems that solve real-world problems. I combine architectural thinking with a strong 
+                    focus on user experience, ensuring that the solutions I create are both powerful and intuitive.
+                  </p>
+                  <p>
+                    With expertise spanning full-stack development, AI integration, and cybersecurity, I'm constantly pushing the 
+                    boundaries of what's possible with modern technology. I believe in writing clean, maintainable code and 
+                    following best practices to deliver high-quality software.
+                  </p>
+                </div>
+              </Card>
+            </div>
+
+            {/* Quick Facts */}
+            <div className="space-y-6">
+              <Card className="p-6 bg-gradient-to-br from-chart-2/10 to-chart-2/5 backdrop-blur border-chart-2/20">
+                <h4 className="text-lg font-semibold text-chart-2 mb-4">Quick Facts</h4>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Location:</span>
+                    <span className="font-medium">Chennai, India</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Education:</span>
+                    <span className="font-medium">CS Engineering (2nd Year)</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">GPA:</span>
+                    <span className="font-medium">6.875/10</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Experience:</span>
+                    <span className="font-medium">1+ Years</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Problems Solved:</span>
+                    <span className="font-medium">300+ (CodeForces)</span>
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="p-6 bg-gradient-to-br from-chart-3/10 to-chart-3/5 backdrop-blur border-chart-3/20">
+                <h4 className="text-lg font-semibold text-chart-3 mb-4">Current Focus</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
+                    <span>Full-Stack Web Development</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-chart-2 rounded-full"></div>
+                    <span>AI & Machine Learning Integration</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-chart-3 rounded-full"></div>
+                    <span>Cybersecurity & Ethical Hacking</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-chart-4 rounded-full"></div>
+                    <span>Competitive Programming</span>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </div>
 
         {/* Achievements Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {defaultAchievements.map((achievement: any, index: number) => {
             const Icon = getIcon(achievement.icon);
             return (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                whileHover={{ scale: 1.05, y: -5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
+              <div key={index}>
                 <Card className="p-6 bg-card/50 backdrop-blur border-border h-full">
                   <div className="flex items-start gap-4">
                     <div className="p-3 bg-primary/10 rounded-lg">
@@ -148,13 +176,13 @@ export default function About() {
                     </div>
                   </div>
                 </Card>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
         {/* Expertise Areas */}
-        <motion.div variants={itemVariants} className="mt-12">
+        <div className="mt-12 mb-12">
           <h3 className="text-2xl font-semibold text-foreground mb-6 text-center">
             Areas of Expertise
           </h3>
@@ -187,8 +215,30 @@ export default function About() {
               </p>
             </Card>
           </div>
-        </motion.div>
-        </motion.div>
+        </div>
+
+        {/* Competitive Programming */}
+        <div className="mt-12 mb-12">
+          <h3 className="text-2xl font-semibold text-foreground mb-6 text-center">
+            Competitive Programming
+          </h3>
+          <CompetitiveProgramming />
+        </div>
+
+        {/* GitHub Stats Section */}
+        <div className="mt-12">
+          <h3 className="text-2xl font-semibold text-foreground mb-8 text-center">
+            GitHub Activity & Stats
+          </h3>
+          <ErrorBoundary fallback={
+            <Card className="p-6 text-center">
+              <p className="text-muted-foreground">GitHub stats temporarily unavailable</p>
+            </Card>
+          }>
+            <GitHubStats />
+          </ErrorBoundary>
+        </div>
+        </div>
       </div>
     </div>
   );
