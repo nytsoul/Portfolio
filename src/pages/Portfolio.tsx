@@ -19,84 +19,98 @@ export default function Portfolio() {
   const profile = useFallbackProfile(dbProfile);
   const githubStats = useFallbackGitHubStats(dbGithubStats);
 
-  const sectionClass = "py-24 lg:py-32";
+  const section = "py-24 lg:py-32";
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      {/* Fixed subtle noise background */}
+      {/* Fixed ambient background — warm editorial glow */}
       <div className="fixed inset-0 -z-20 pointer-events-none">
-        {/* Primary glow — top left */}
+        {/* Warm gold top-left radial */}
         <div
-          className="absolute w-[600px] h-[600px] -top-48 -left-48 rounded-full opacity-[0.06]"
-          style={{ background: "radial-gradient(circle, oklch(0.68 0.22 255), transparent 70%)" }}
+          className="absolute w-[700px] h-[700px] -top-56 -left-56 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, oklch(0.78 0.12 75 / 0.055) 0%, transparent 65%)",
+          }}
         />
-        {/* Secondary glow — bottom right */}
+        {/* Cool teal bottom-right */}
         <div
-          className="absolute w-[500px] h-[500px] -bottom-32 -right-32 rounded-full opacity-[0.04]"
-          style={{ background: "radial-gradient(circle, oklch(0.72 0.18 200), transparent 70%)" }}
+          className="absolute w-[500px] h-[500px] -bottom-32 -right-24 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, oklch(0.72 0.10 200 / 0.035) 0%, transparent 65%)",
+          }}
+        />
+        {/* Faint horizontal rule bands for depth */}
+        <div
+          className="absolute inset-0 opacity-[0.12]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, oklch(0.55 0.008 80 / 0.35) 1px, transparent 1px)",
+            backgroundSize: "30px 30px",
+          }}
         />
       </div>
 
       <main>
-        {/* Hero — full screen */}
+        {/* Hero */}
         <section id="hero">
           <Hero profile={profile} githubStats={githubStats} />
         </section>
 
-        {/* Divider */}
-        <div className="h-px w-full bg-border/40" />
+        <div className="h-px w-full bg-border/35" />
 
         {/* About */}
         <motion.section
           id="about"
-          className={sectionClass}
+          className={section}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.08 }}
           transition={{ duration: 0.5 }}
         >
           <About />
         </motion.section>
 
-        <div className="h-px w-full bg-border/40" />
+        <div className="h-px w-full bg-border/35" />
 
         {/* Projects */}
         <motion.section
           id="projects"
-          className={sectionClass}
+          className={section}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.08 }}
           transition={{ duration: 0.5 }}
         >
           <Projects />
         </motion.section>
 
-        <div className="h-px w-full bg-border/40" />
+        <div className="h-px w-full bg-border/35" />
 
         {/* Skills */}
         <motion.section
           id="skills"
-          className={sectionClass}
+          className={section}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.08 }}
           transition={{ duration: 0.5 }}
         >
           <Skills />
         </motion.section>
 
-        <div className="h-px w-full bg-border/40" />
+        <div className="h-px w-full bg-border/35" />
 
         {/* Contact */}
         <motion.section
           id="contact"
-          className={sectionClass}
+          className={section}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.08 }}
           transition={{ duration: 0.5 }}
         >
           <Contact profile={profile} />

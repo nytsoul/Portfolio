@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Navigation() {
@@ -11,85 +10,82 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 60);
       const sections = ["hero", "about", "projects", "skills", "contact"];
-      const currentSection = sections.find((section) => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
+      const current = sections.find((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          const r = el.getBoundingClientRect();
+          return r.top <= 100 && r.bottom >= 100;
         }
         return false;
       });
-      if (currentSection) setActiveSection(currentSection);
+      if (current) setActiveSection(current);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navItems = [
-    { name: "Home", href: "#hero" },
     { name: "About", href: "#about" },
     { name: "Projects", href: "#projects" },
     { name: "Skills", href: "#skills" },
     { name: "Contact", href: "#contact" },
   ];
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsMobileMenuOpen(false);
-    }
+  const scrollTo = (href: string) => {
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    setIsMobileMenuOpen(false);
   };
 
   return (
     <>
       <motion.nav
-        initial={{ y: -100, opacity: 0 }}
+        initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-            ? "glass-strong shadow-2xl shadow-black/30 border-b border-border/60"
-            : "bg-transparent border-b border-transparent"
+            ? "glass-strong shadow-xl shadow-black/40 border-b border-border/50"
+            : "bg-transparent"
           }`}
       >
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center h-[60px]">
-            {/* Logo */}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => scrollToSection("#hero")}
-              className="flex items-center gap-2.5 group"
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="flex items-center justify-between h-[58px]">
+            {/* Logo — Playfair Display italic monogram */}
+            <button
+              onClick={() => scrollTo("#hero")}
+              className="group flex items-center gap-3"
             >
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
-                <span className="text-sm font-bold text-primary-foreground">N</span>
-              </div>
-              <span className="text-base font-semibold text-foreground/90 group-hover:text-foreground transition-colors">
-                Neshun R
+              <span
+                className="text-2xl font-bold italic text-primary leading-none"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                NR.
               </span>
-            </motion.button>
+              <span className="font-ui text-xs tracking-[0.18em] uppercase text-muted-foreground/60 hidden sm:block">
+                Portfolio
+              </span>
+            </button>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1">
+            {/* Desktop nav — sans-serif for UI clarity */}
+            <div className="hidden md:flex items-center gap-0.5 font-ui">
               {navItems.map((item) => {
                 const isActive = activeSection === item.href.slice(1);
                 return (
                   <button
                     key={item.name}
-                    onClick={() => scrollToSection(item.href)}
-                    className={`relative px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${isActive
+                    onClick={() => scrollTo(item.href)}
+                    className={`relative px-4 py-2 text-[13px] font-medium tracking-wide transition-all duration-200 ${isActive
                         ? "text-foreground"
-                        : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                        : "text-muted-foreground hover:text-foreground"
                       }`}
                   >
                     {item.name}
                     {isActive && (
-                      <motion.div
-                        layoutId="navUnderline"
-                        className="absolute bottom-1 left-4 right-4 h-px bg-primary rounded-full"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      <motion.span
+                        layoutId="navIndicator"
+                        className="absolute bottom-1.5 left-4 right-4 h-px bg-primary"
+                        transition={{ type: "spring", stiffness: 400, damping: 32 }}
                       />
                     )}
                   </button>
@@ -97,52 +93,47 @@ export default function Navigation() {
               })}
             </div>
 
-            {/* Right side — CTA + Theme */}
+            {/* CTA */}
             <div className="hidden md:flex items-center gap-3">
               <ThemeToggle />
-              <Button
-                size="sm"
-                onClick={() => scrollToSection("#contact")}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 text-sm font-medium"
+              <button
+                onClick={() => scrollTo("#contact")}
+                className="font-ui text-[13px] font-semibold px-4 py-1.5 rounded bg-primary text-primary-foreground hover:opacity-90 transition-opacity shadow-md shadow-primary/20"
               >
                 Hire Me
-              </Button>
+              </button>
             </div>
 
             {/* Mobile */}
             <div className="md:hidden flex items-center gap-2">
               <ThemeToggle />
-              <Button
-                variant="ghost"
-                size="icon"
+              <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="w-9 h-9"
+                className="font-ui w-9 h-9 flex items-center justify-center rounded border border-border/60 text-muted-foreground hover:text-foreground transition-colors"
               >
                 {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-              </Button>
+              </button>
             </div>
           </div>
         </div>
       </motion.nav>
 
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="fixed top-[60px] left-0 right-0 z-40 glass-strong border-b border-border md:hidden"
+          className="fixed top-[58px] left-0 right-0 z-40 glass-strong border-b border-border/50 md:hidden"
         >
-          <div className="max-w-7xl mx-auto px-6 py-4 space-y-1">
+          <div className="max-w-7xl mx-auto px-6 py-4 space-y-0.5 font-ui">
             {navItems.map((item) => {
               const isActive = activeSection === item.href.slice(1);
               return (
                 <button
                   key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className={`w-full text-left px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${isActive
-                      ? "text-primary bg-primary/10"
-                      : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                  onClick={() => scrollTo(item.href)}
+                  className={`w-full text-left px-3 py-2.5 text-[13px] font-medium rounded-md transition-colors ${isActive
+                      ? "text-primary bg-primary/8"
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent/40"
                     }`}
                 >
                   {item.name}
