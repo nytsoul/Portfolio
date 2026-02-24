@@ -11,112 +11,99 @@ import { useFallbackProfile, useFallbackGitHubStats } from "@/hooks/use-fallback
 import { useGitHubSync } from "@/hooks/use-github-sync";
 
 export default function Portfolio() {
-  // Trigger GitHub sync on component mount
   useGitHubSync();
 
-  // Fetch data from Express backend instead of Convex
   const { data: dbProfile } = useProfile();
   const { data: dbGithubStats } = useGitHubStats();
 
-  // Use fallback data from environment if API data isn't available
   const profile = useFallbackProfile(dbProfile);
   const githubStats = useFallbackGitHubStats(dbGithubStats);
+
+  const sectionClass = "py-24 lg:py-32";
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <main className="relative">
-        {/* Hero Section */}
-        <motion.section
-          id="hero"
-          className="min-h-screen"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          <Hero profile={profile} githubStats={githubStats} />
-        </motion.section>
+      {/* Fixed subtle noise background */}
+      <div className="fixed inset-0 -z-20 pointer-events-none">
+        {/* Primary glow — top left */}
+        <div
+          className="absolute w-[600px] h-[600px] -top-48 -left-48 rounded-full opacity-[0.06]"
+          style={{ background: "radial-gradient(circle, oklch(0.68 0.22 255), transparent 70%)" }}
+        />
+        {/* Secondary glow — bottom right */}
+        <div
+          className="absolute w-[500px] h-[500px] -bottom-32 -right-32 rounded-full opacity-[0.04]"
+          style={{ background: "radial-gradient(circle, oklch(0.72 0.18 200), transparent 70%)" }}
+        />
+      </div>
 
-        {/* About Section */}
+      <main>
+        {/* Hero — full screen */}
+        <section id="hero">
+          <Hero profile={profile} githubStats={githubStats} />
+        </section>
+
+        {/* Divider */}
+        <div className="h-px w-full bg-border/40" />
+
+        {/* About */}
         <motion.section
           id="about"
-          className="min-h-screen py-20 relative"
+          className={sectionClass}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.5 }}
         >
           <About />
         </motion.section>
 
-        {/* Projects Section */}
+        <div className="h-px w-full bg-border/40" />
+
+        {/* Projects */}
         <motion.section
           id="projects"
-          className="min-h-screen py-20 relative"
+          className={sectionClass}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.5 }}
         >
           <Projects />
         </motion.section>
 
-        {/* Skills Section */}
+        <div className="h-px w-full bg-border/40" />
+
+        {/* Skills */}
         <motion.section
           id="skills"
-          className="min-h-screen py-20 relative"
+          className={sectionClass}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.5 }}
         >
           <Skills />
         </motion.section>
 
-        {/* Contact Section */}
+        <div className="h-px w-full bg-border/40" />
+
+        {/* Contact */}
         <motion.section
           id="contact"
-          className="py-20 relative"
+          className={sectionClass}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.5 }}
         >
           <Contact profile={profile} />
         </motion.section>
       </main>
 
-      {/* Footer */}
       <Footer profile={profile} />
-
-      {/* Animated background gradient */}
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"
-          animate={{
-            x: [0, 100, 0],
-            y: [0, 50, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-chart-2/10 rounded-full blur-3xl"
-          animate={{
-            x: [0, -100, 0],
-            y: [0, -50, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-      </div>
     </div>
   );
 }

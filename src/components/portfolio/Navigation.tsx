@@ -12,8 +12,6 @@ export default function Navigation() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-
-      // Update active section based on scroll position
       const sections = ["hero", "about", "projects", "skills", "contact"];
       const currentSection = sections.find((section) => {
         const element = document.getElementById(section);
@@ -23,12 +21,8 @@ export default function Navigation() {
         }
         return false;
       });
-      
-      if (currentSection) {
-        setActiveSection(currentSection);
-      }
+      if (currentSection) setActiveSection(currentSection);
     };
-    
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -52,59 +46,79 @@ export default function Navigation() {
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "glass-strong shadow-lg" : "bg-transparent"
-        }`}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
+            ? "glass-strong shadow-2xl shadow-black/30 border-b border-border/60"
+            : "bg-transparent border-b border-transparent"
+          }`}
       >
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-2xl font-bold bg-gradient-to-r from-primary via-chart-2 to-chart-5 bg-clip-text text-transparent cursor-pointer"
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex justify-between items-center h-[60px]">
+            {/* Logo */}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => scrollToSection("#hero")}
+              className="flex items-center gap-2.5 group"
             >
-              NR
-            </motion.div>
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
+                <span className="text-sm font-bold text-primary-foreground">N</span>
+              </div>
+              <span className="text-base font-semibold text-foreground/90 group-hover:text-foreground transition-colors">
+                Neshun R
+              </span>
+            </motion.button>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-2">
+            <div className="hidden md:flex items-center gap-1">
               {navItems.map((item) => {
                 const isActive = activeSection === item.href.slice(1);
                 return (
-                  <Button
+                  <button
                     key={item.name}
-                    variant="ghost"
                     onClick={() => scrollToSection(item.href)}
-                    className={`relative text-muted-foreground hover:text-primary transition-colors ${
-                      isActive ? "text-primary" : ""
-                    }`}
+                    className={`relative px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${isActive
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                      }`}
                   >
                     {item.name}
                     {isActive && (
                       <motion.div
-                        layoutId="activeIndicator"
-                        className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
+                        layoutId="navUnderline"
+                        className="absolute bottom-1 left-4 right-4 h-px bg-primary rounded-full"
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
-                  </Button>
+                  </button>
                 );
               })}
-              <ThemeToggle />
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Right side — CTA + Theme */}
+            <div className="hidden md:flex items-center gap-3">
+              <ThemeToggle />
+              <Button
+                size="sm"
+                onClick={() => scrollToSection("#contact")}
+                className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 text-sm font-medium"
+              >
+                Hire Me
+              </Button>
+            </div>
+
+            {/* Mobile */}
             <div className="md:hidden flex items-center gap-2">
               <ThemeToggle />
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="w-9 h-9"
               >
-                {isMobileMenuOpen ? <X /> : <Menu />}
+                {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
               </Button>
             </div>
           </div>
@@ -114,25 +128,25 @@ export default function Navigation() {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="fixed top-16 left-0 right-0 z-40 glass-strong md:hidden"
+          exit={{ opacity: 0, y: -10 }}
+          className="fixed top-[60px] left-0 right-0 z-40 glass-strong border-b border-border md:hidden"
         >
-          <div className="px-4 py-6 space-y-2">
+          <div className="max-w-7xl mx-auto px-6 py-4 space-y-1">
             {navItems.map((item) => {
               const isActive = activeSection === item.href.slice(1);
               return (
-                <Button
+                <button
                   key={item.name}
-                  variant="ghost"
                   onClick={() => scrollToSection(item.href)}
-                  className={`w-full justify-start text-muted-foreground hover:text-primary ${
-                    isActive ? "text-primary bg-primary/10" : ""
-                  }`}
+                  className={`w-full text-left px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${isActive
+                      ? "text-primary bg-primary/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                    }`}
                 >
                   {item.name}
-                </Button>
+                </button>
               );
             })}
           </div>

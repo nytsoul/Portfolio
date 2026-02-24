@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
-import { Github, Mail, Linkedin, MapPin, ExternalLink, Instagram } from "lucide-react";
+import { Github, Mail, Linkedin, MapPin, Download, ArrowDown, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TypeWriter from "./TypeWriter";
 
@@ -11,220 +10,237 @@ interface HeroProps {
 }
 
 export default function Hero({ profile, githubStats }: HeroProps) {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
+  const stats = [
+    { label: "Public Repos", value: githubStats?.publicRepos || 0 },
+    { label: "GitHub Stars", value: githubStats?.totalStars || 0 },
+    { label: "Followers", value: githubStats?.followers || 0 },
+    { label: "Problems Solved", value: "300+" },
+  ];
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
+  const socialLinks = [
+    profile?.github && {
+      icon: Github,
+      href: `https://github.com/${profile.github}`,
+      label: "GitHub",
+    },
+    profile?.email && {
+      icon: Mail,
+      href: `mailto:${profile.email}`,
+      label: "Email",
+    },
+    profile?.linkedin && {
+      icon: Linkedin,
+      href: profile.linkedin,
+      label: "LinkedIn",
+    },
+    profile?.instagram && {
+      icon: Instagram,
+      href: profile.instagram,
+      label: "Instagram",
+    },
+  ].filter(Boolean) as { icon: any; href: string; label: string }[];
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 pt-16">
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="max-w-6xl mx-auto w-full"
-      >
-        {/* Profile Section - Image Left, Info Right */}
-        <div className="grid lg:grid-cols-[auto_1fr] gap-8 lg:gap-12 items-start mb-12">
-          {/* Left Column - Profile Image Only */}
-          <motion.div variants={itemVariants} className="flex justify-center lg:justify-start">
-            <Avatar className="w-48 h-48 lg:w-56 lg:h-56 ring-4 ring-primary/20 ring-offset-4 ring-offset-background shadow-2xl shadow-primary/10">
-              <AvatarImage src={profile?.profileImage || "/profile.jpg"} className="object-cover" />
-              <AvatarFallback className="text-5xl font-bold bg-gradient-to-br from-primary to-primary/50">
-                {profile?.name?.split(" ").map((n: string) => n[0]).join("") || "NR"}
-              </AvatarFallback>
-            </Avatar>
-          </motion.div>
+    <div className="relative min-h-screen flex items-center">
+      {/* Subtle grid background */}
+      <div
+        className="absolute inset-0 -z-10 pointer-events-none"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 25% 25%, oklch(0.68 0.22 255 / 0.06) 0%, transparent 50%), radial-gradient(circle at 75% 75%, oklch(0.72 0.18 200 / 0.04) 0%, transparent 50%)",
+        }}
+      />
+      {/* Fine dot grid */}
+      <div
+        className="absolute inset-0 -z-10 pointer-events-none opacity-30"
+        style={{
+          backgroundImage: "radial-gradient(circle, oklch(0.55 0.012 255 / 0.3) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      />
 
-          {/* Right Column - Name and Info */}
-          <motion.div variants={itemVariants} className="space-y-6">
+      <div className="w-full max-w-7xl mx-auto px-6 lg:px-8 pt-20 pb-16">
+        <div className="grid lg:grid-cols-[1fr_340px] gap-16 xl:gap-24 items-center">
+          {/* Left Column — Text Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="space-y-8"
+          >
+            {/* Status badge */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border/60 bg-card/50 text-xs text-muted-foreground"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-chart-3 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-chart-3" />
+              </span>
+              Open to opportunities
+            </motion.div>
+
+            {/* Name */}
             <div>
-              <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground tracking-tight">
-                {profile?.name || "Neshun R"}
-              </h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.7 }}
+                className="text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground leading-none"
+              >
+                {profile?.name?.split(" ")[0] || "Neshun"}
+                <br />
+                <span className="gradient-text">
+                  {profile?.name?.split(" ").slice(1).join(" ") || "R"}
+                </span>
+              </motion.h1>
               {profile?.location && (
-                <div className="flex items-center gap-2 mt-3 text-muted-foreground text-lg">
-                  <MapPin className="w-5 h-5" />
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                  className="flex items-center gap-1.5 mt-4 text-muted-foreground text-sm"
+                >
+                  <MapPin className="w-4 h-4" />
                   <span>{profile.location}</span>
-                </div>
+                </motion.div>
               )}
             </div>
 
-            <motion.div variants={itemVariants} className="min-h-[70px]">
+            {/* Typewriter role */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="min-h-[36px]"
+            >
               <TypeWriter
                 texts={[
-                  "Engineering Student from India 🇮🇳",
-                  "Full-stack developer passionate about AI",
-                  "Building scalable and secure systems",
-                  "Cybersecurity enthusiast and problem solver",
+                  "Full-Stack Developer & AI Enthusiast",
+                  "Cybersecurity Researcher",
+                  "Competitive Programmer",
+                  "CS Engineering Student @ SSN",
                   "\"Consistency beats motivation.\"",
                 ]}
-                typingSpeed={50}
-                deletingSpeed={30}
-                pauseDuration={2500}
-                className="text-2xl text-primary font-semibold leading-relaxed"
+                typingSpeed={45}
+                deletingSpeed={25}
+                pauseDuration={2800}
+                className="text-xl lg:text-2xl text-muted-foreground font-medium"
               />
             </motion.div>
 
-            <motion.p variants={itemVariants} className="text-lg text-foreground/80 leading-relaxed max-w-2xl">
+            {/* Bio */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="text-base text-muted-foreground leading-relaxed max-w-xl"
+            >
               {profile?.bio ||
-                "2nd-year CS Engineering student at SSN College of Engineering. Building robust systems and solving real-world problems with a focus on user experience and architectural thinking."}
+                "2nd-year CS Engineering student at SSN College of Engineering, Chennai. Building robust, scalable systems with a focus on clean architecture and exceptional user experiences."}
             </motion.p>
 
-            {/* Social Links */}
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-3 pt-2">
-              {profile?.github && (
-                <Button variant="outline" size="default" asChild>
-                  <a
-                    href={`https://github.com/${profile.github}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Github className="w-4 h-4 mr-2" />
-                    GitHub
-                  </a>
-                </Button>
-              )}
-              {profile?.email && (
-                <Button variant="outline" size="default" asChild>
-                  <a href={`mailto:${profile.email}`}>
-                    <Mail className="w-4 h-4 mr-2" />
-                    Email
-                  </a>
-                </Button>
-              )}
-              {profile?.linkedin && (
-                <Button variant="outline" size="default" asChild>
-                  <a
-                    href={profile.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Linkedin className="w-4 h-4 mr-2" />
-                    LinkedIn
-                  </a>
-                </Button>
-              )}
-              {profile?.instagram && (
-                <Button variant="outline" size="default" asChild>
-                  <a
-                    href={profile.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Instagram className="w-4 h-4 mr-2" />
-                    Instagram
-                  </a>
-                </Button>
-              )}
-              {profile?.website && (
-                <Button variant="outline" size="default" asChild>
-                  <a
-                    href={profile.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    Website
-                  </a>
-                </Button>
-              )}
+            {/* Action buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+              className="flex flex-wrap items-center gap-3"
+            >
+              <Button
+                size="lg"
+                onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
+                className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 font-semibold px-6"
+              >
+                View Projects
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+                className="font-semibold px-6 border-border hover:bg-accent/50"
+              >
+                Get in Touch
+              </Button>
             </motion.div>
+
+            {/* Social Icons */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="flex items-center gap-3"
+            >
+              {socialLinks.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="w-10 h-10 flex items-center justify-center rounded-lg border border-border/60 bg-card/50 text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-accent/60 transition-all duration-200"
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* Right Column — Avatar + Stats */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4, duration: 0.7, ease: "easeOut" }}
+            className="flex flex-col items-center lg:items-end gap-8"
+          >
+            {/* Profile image */}
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-full bg-gradient-to-br from-primary/20 via-chart-2/10 to-transparent blur-2xl" />
+              <div className="relative w-56 h-56 lg:w-64 lg:h-64">
+                <Avatar className="w-full h-full ring-2 ring-border/60 ring-offset-4 ring-offset-background shadow-2xl">
+                  <AvatarImage src={profile?.profileImage || "/profile.jpg"} className="object-cover" />
+                  <AvatarFallback className="text-5xl font-bold bg-gradient-to-br from-primary/30 to-chart-2/20 text-foreground">
+                    {profile?.name?.split(" ").map((n: string) => n[0]).join("") || "NR"}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+            </div>
+
+            {/* Stats grid */}
+            <div className="grid grid-cols-2 gap-3 w-full max-w-[280px]">
+              {stats.map(({ label, value }) => (
+                <div
+                  key={label}
+                  className="bg-card/60 border border-border/60 rounded-xl p-4 text-center backdrop-blur-sm hover:border-primary/40 transition-colors"
+                >
+                  <div className="text-2xl font-bold text-foreground mb-1">{value}</div>
+                  <div className="text-xs text-muted-foreground font-medium">{label}</div>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
 
-        {/* GitHub Stats - Full Width Below */}
-        <motion.div variants={itemVariants} className="mt-12">
-          <Card className="p-8 bg-card/50 backdrop-blur border-border">
-            <h3 className="text-2xl font-bold mb-8 text-foreground flex items-center gap-3">
-              <Github className="w-6 h-6 text-primary" />
-              GitHub Statistics
-            </h3>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                transition={{ type: "spring" as const, stiffness: 300 }}
-                className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-6 text-center border border-primary/20"
-              >
-                <div className="text-4xl lg:text-5xl font-bold text-primary mb-2">
-                  {githubStats?.publicRepos || 0}
-                </div>
-                <div className="text-sm font-medium text-muted-foreground">
-                  Public Repos
-                </div>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                transition={{ type: "spring" as const, stiffness: 300 }}
-                className="bg-gradient-to-br from-chart-2/10 to-chart-2/5 rounded-xl p-6 text-center border border-chart-2/20"
-              >
-                <div className="text-4xl lg:text-5xl font-bold text-chart-2 mb-2">
-                  {githubStats?.followers || 0}
-                </div>
-                <div className="text-sm font-medium text-muted-foreground">
-                  Followers
-                </div>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                transition={{ type: "spring" as const, stiffness: 300 }}
-                className="bg-gradient-to-br from-chart-3/10 to-chart-3/5 rounded-xl p-6 text-center border border-chart-3/20"
-              >
-                <div className="text-4xl lg:text-5xl font-bold text-chart-3 mb-2">
-                  {githubStats?.following || 0}
-                </div>
-                <div className="text-sm font-medium text-muted-foreground">
-                  Following
-                </div>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                transition={{ type: "spring" as const, stiffness: 300 }}
-                className="bg-gradient-to-br from-chart-4/10 to-chart-4/5 rounded-xl p-6 text-center border border-chart-4/20"
-              >
-                <div className="text-4xl lg:text-5xl font-bold text-chart-4 mb-2">
-                  {githubStats?.totalStars || 0}
-                </div>
-                <div className="text-sm font-medium text-muted-foreground">
-                  Total Stars
-                </div>
-              </motion.div>
-            </div>
-
-            {githubStats?.lastUpdated && (
-              <div className="mt-6 text-sm text-muted-foreground text-center">
-                Last updated: {new Date(githubStats.lastUpdated).toLocaleDateString()}
-              </div>
-            )}
-          </Card>
-        </motion.div>
-
-        {/* Scroll Indicator */}
+        {/* Scroll cue */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="flex justify-center mt-16"
+          transition={{ delay: 1.2 }}
+          className="flex justify-center mt-20"
         >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-6 h-10 border-2 border-primary rounded-full flex justify-center p-1"
+          <motion.button
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+            className="flex flex-col items-center gap-2 text-muted-foreground/50 hover:text-muted-foreground transition-colors text-xs tracking-wider uppercase"
           >
-            <motion.div className="w-1.5 h-1.5 bg-primary rounded-full" />
-          </motion.div>
+            <span>Scroll</span>
+            <ArrowDown className="w-4 h-4" />
+          </motion.button>
         </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 }

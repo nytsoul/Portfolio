@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail, Github, Linkedin, ExternalLink, MapPin, Instagram, Code } from "lucide-react";
+import { Mail, Github, Linkedin, ExternalLink, MapPin, Instagram, Code, ArrowUpRight } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 
 interface ContactProps {
@@ -11,142 +11,141 @@ interface ContactProps {
 export default function Contact({ profile }: ContactProps) {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
   const contactMethods = [
     {
       icon: Mail,
       label: "Email",
       value: profile?.email || "neshun7413@gmail.com",
       href: `mailto:${profile?.email || "neshun7413@gmail.com"}`,
-      color: "text-chart-1",
+      description: "Best for project inquiries",
     },
     {
       icon: Github,
       label: "GitHub",
-      value: profile?.github || "nytsoul",
+      value: `github.com/${profile?.github || "nytsoul"}`,
       href: `https://github.com/${profile?.github || "nytsoul"}`,
-      color: "text-foreground",
+      description: "View my open-source work",
     },
     {
       icon: Linkedin,
       label: "LinkedIn",
-      value: "Connect with me",
+      value: "Connect professionally",
       href: profile?.linkedin || "#",
-      color: "text-chart-2",
+      description: "Professional networking",
     },
     {
       icon: Instagram,
       label: "Instagram",
       value: "@nyt__soul",
       href: profile?.instagram || "https://instagram.com/nyt__soul",
-      color: "text-chart-5",
+      description: "Personal updates",
     },
     {
       icon: Code,
-      label: "CodeForces",
+      label: "Codeforces",
       value: "nytsoul",
       href: `https://codeforces.com/profile/${import.meta.env.VITE_CODEFORCES_USERNAME || "nytsoul"}`,
-      color: "text-chart-3",
+      description: "Competitive programming",
     },
     {
       icon: ExternalLink,
       label: "Website",
-      value: profile?.website || "https://alexchen.dev",
-      href: profile?.website || "https://alexchen.dev",
-      color: "text-chart-3",
+      value: profile?.website || "Portfolio",
+      href: profile?.website || "#",
+      description: "Personal website",
     },
-  ];
+  ].filter((m) => m.href !== "#");
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8" ref={ref}>
+    <div className="w-full px-6 lg:px-8" ref={ref}>
       <div className="max-w-5xl mx-auto">
+        {/* Section Header */}
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+          className="mb-16"
         >
-          {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
-              Get In Touch
-            </h2>
-            <div className="w-20 h-1 bg-primary mx-auto mb-6" />
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              I'm always open to discussing new projects, opportunities, or just
-              having a chat about technology. Feel free to reach out!
-            </p>
-          </motion.div>
+          <p className="section-label">Contact</p>
+          <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
+            Let's work
+            <br />
+            <span className="gradient-text">together</span>
+          </h2>
+          <p className="text-base text-muted-foreground mt-4 max-w-lg">
+            I'm actively looking for internships and collaborative projects. Whether you have a question,
+            a proposal, or just want to connect — don't hesitate.
+          </p>
+        </motion.div>
 
+        <div className="grid lg:grid-cols-[1fr_320px] gap-10">
           {/* Contact Cards */}
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
+          <div className="grid sm:grid-cols-2 gap-3">
             {contactMethods.map((method, index) => {
               const Icon = method.icon;
               return (
-                <motion.div
+                <motion.a
                   key={index}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.02, y: -5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  href={method.href}
+                  target={method.href.startsWith("mailto") ? undefined : "_blank"}
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.4, delay: index * 0.07 }}
+                  whileHover={{ y: -3 }}
+                  className="group flex items-start gap-4 p-4 rounded-xl border border-border/60 bg-card/50 hover:border-primary/40 hover:bg-card/80 transition-all duration-200"
                 >
-                  <Card className="p-6 bg-card/50 backdrop-blur border-border">
-                    <a
-                      href={method.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-4 group"
-                    >
-                      <div
-                        className={`p-3 bg-secondary/50 rounded-lg group-hover:bg-secondary transition-colors`}
-                      >
-                        <Icon className={`w-6 h-6 ${method.color}`} />
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-sm text-muted-foreground mb-1">
-                          {method.label}
-                        </div>
-                        <div className="text-foreground font-medium group-hover:text-primary transition-colors">
-                          {method.value}
-                        </div>
-                      </div>
-                      <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </a>
-                  </Card>
-                </motion.div>
+                  <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-accent/60 border border-border/40 shrink-0 group-hover:border-primary/40 transition-colors">
+                    <Icon className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs text-muted-foreground mb-0.5">{method.label}</div>
+                    <div className="text-sm font-medium text-foreground truncate">{method.value}</div>
+                    <div className="text-xs text-muted-foreground/70 mt-0.5">{method.description}</div>
+                  </div>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 mt-0.5" />
+                </motion.a>
               );
             })}
           </div>
 
-          {/* CTA Section */}
-          <motion.div variants={itemVariants}>
-            <Card className="p-8 bg-gradient-to-br from-primary/10 via-chart-2/10 to-chart-3/10 border-border text-center">
-              <h3 className="text-2xl font-bold text-foreground mb-4">
-                Let's Build Something Amazing
+          {/* CTA Panel */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="lg:sticky lg:top-24 self-start"
+          >
+            <div className="rounded-2xl border border-border/60 bg-card/50 p-7">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-5">
+                <Mail className="w-5 h-5 text-primary" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-2">
+                Ready to build something?
               </h3>
-              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                Whether you have a project in mind, need technical consultation, or
-                just want to connect, I'd love to hear from you.
+              <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                Whether it's a collaboration, internship opportunity, or freelance project — I'm available and
+                responsive.
               </p>
-              <Button size="lg" asChild>
+              <Button
+                size="lg"
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 font-semibold"
+                asChild
+              >
                 <a href={`mailto:${profile?.email || "neshun7413@gmail.com"}`}>
-                  <Mail className="w-5 h-5 mr-2" />
-                  Send Me an Email
+                  <Mail className="w-4 h-4 mr-2" />
+                  Send a Message
                 </a>
               </Button>
-            </Card>
+              {profile?.location && (
+                <div className="flex items-center gap-2 text-xs text-muted-foreground mt-5">
+                  <MapPin className="w-3.5 h-3.5" />
+                  <span>{profile.location}</span>
+                </div>
+              )}
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
