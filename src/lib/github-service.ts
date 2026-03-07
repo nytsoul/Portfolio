@@ -221,10 +221,31 @@ export async function fetchGitHubData(username: string = env.github.username): P
         // Fetch user data
         const userData = await fetchGitHubAPI<any>(`/users/${username}`);
 
-        // Fetch repositories
-        const repos = await fetchGitHubAPI<GitHubRepo[]>(
-            `/users/${username}/repos?per_page=${env.github.maxRepos}&sort=updated`
-        );
+        // Fetch all repositories with pagination
+        let repos: GitHubRepo[] = [];
+        let page = 1;
+        const perPage = 100;
+        let hasMore = true;
+
+        while (hasMore) {
+            const pageRepos = await fetchGitHubAPI<GitHubRepo[]>(
+                `/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`
+            );
+
+            if (pageRepos.length === 0) {
+                hasMore = false;
+            } else {
+                repos = [...repos, ...pageRepos];
+                if (pageRepos.length < perPage) {
+                    hasMore = false;
+                } else {
+                    page++;
+                }
+            }
+
+            // Safety break to avoid infinite loops if GitHub API behaves unexpectedly
+            if (page > 10) break;
+        }
 
         // Process projects
         const projects: ProcessedProject[] = repos

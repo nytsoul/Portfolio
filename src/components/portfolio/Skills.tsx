@@ -60,119 +60,117 @@ export default function Skills() {
   );
 
   return (
-    <div className="w-full px-6 lg:px-10" ref={ref}>
-      <div className="max-w-7xl mx-auto">
+    <div className="w-full px-6 lg:px-16" ref={ref}>
 
-        {/* ── Header ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="mb-16"
-        >
-          <p className="section-label mb-4">Skills</p>
-          <h2 className="text-5xl lg:text-6xl font-bold">
-            Technologies &amp;{" "}
-            <span className="italic gradient-text">Tools</span>
-          </h2>
-          <p className="text-base text-muted-foreground mt-4 max-w-xl leading-relaxed">
-            A curated set of technologies I've worked with across personal, academic, and collaborative projects.
-          </p>
-        </motion.div>
+      {/* ── Header ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5 }}
+        className="mb-16"
+      >
+        <p className="section-label mb-4">Skills</p>
+        <h2 className="text-5xl lg:text-6xl font-bold">
+          Technologies &amp;{" "}
+          <span className="italic gradient-text">Tools</span>
+        </h2>
+        <p className="text-base text-muted-foreground mt-4 max-w-xl leading-relaxed">
+          A curated set of technologies I've worked with across personal, academic, and collaborative projects.
+        </p>
+      </motion.div>
 
-        {/* ── Skills by category ── */}
-        <div className="space-y-12">
-          {CATEGORIES.map((category, catIdx) => {
-            const skills = byCategory[category] ?? [];
-            if (!skills.length) return null;
-            return (
-              <motion.section
-                key={category}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.45, delay: catIdx * 0.07 }}
-              >
-                {/* Category row */}
-                <div className="flex items-center gap-5 mb-5">
-                  <h3
-                    className="font-ui text-[11px] font-semibold tracking-[0.18em] uppercase text-muted-foreground/70 shrink-0"
-                  >
-                    {category}
-                  </h3>
-                  <div className="flex-1 h-px bg-border/40" />
-                  <span className="font-ui text-[10px] text-muted-foreground/40">{skills.length}</span>
-                </div>
-
-                {/* Skill chips */}
-                <div className="flex flex-wrap gap-2 font-ui">
-                  {skills.map((skill, idx) => (
-                    <motion.div
-                      key={skill._id}
-                      initial={{ opacity: 0, scale: 0.94 }}
-                      animate={inView ? { opacity: 1, scale: 1 } : {}}
-                      transition={{ duration: 0.28, delay: catIdx * 0.06 + idx * 0.035 }}
-                      whileHover={{ y: -2 }}
-                      className="group flex items-center gap-2.5 px-3.5 py-2 rounded-md border border-border/55 bg-card/50 cursor-default hover:border-primary/35 hover:bg-card/80 transition-all duration-200"
-                    >
-                      {/* 5-dot strength indicator */}
-                      <div className="flex items-end gap-[3px] h-3.5">
-                        {[...Array(5)].map((_, i) => {
-                          const filled = i < Math.round(skill.strength / 20);
-                          return (
-                            <div
-                              key={i}
-                              className={`w-[3px] rounded-full transition-colors ${filled ? "bg-primary/70" : "bg-border/50"
-                                }`}
-                              style={{ height: `${40 + i * 12}%` }}
-                            />
-                          );
-                        })}
-                      </div>
-                      <span className="text-[13px] font-medium text-foreground/90">{skill.name}</span>
-                      {/* Level badge — appears on hover */}
-                      <span
-                        className={`text-[9px] font-semibold tracking-wide uppercase px-1.5 py-0.5 rounded border opacity-0 group-hover:opacity-100 transition-opacity ${levelColor(skill.strength)}`}
-                      >
-                        {levelLabel(skill.strength)}
-                      </span>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.section>
-            );
-          })}
-        </div>
-
-        {/* ── Summary stat bar ── */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-16 grid grid-cols-3 gap-0 border border-border/50 rounded-lg overflow-hidden font-ui"
-        >
-          {[
-            { value: LOCAL_SKILLS.length, label: "Technologies" },
-            { value: `${avgStrength}%`, label: "Avg. Proficiency" },
-            { value: CATEGORIES.length, label: "Domains" },
-          ].map(({ value, label }, i) => (
-            <div
-              key={label}
-              className={`flex flex-col items-center justify-center py-8 gap-1 bg-card/40 ${i < 2 ? "border-r border-border/50" : ""
-                }`}
+      {/* ── Skills by category ── */}
+      <div className="space-y-12">
+        {CATEGORIES.map((category, catIdx) => {
+          const skills = byCategory[category] ?? [];
+          if (!skills.length) return null;
+          return (
+            <motion.section
+              key={category}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.45, delay: catIdx * 0.07 }}
             >
-              <span
-                className="text-3xl font-bold gradient-text"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                {value}
-              </span>
-              <span className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground/60">
-                {label}
-              </span>
-            </div>
-          ))}
-        </motion.div>
+              {/* Category row */}
+              <div className="flex items-center gap-5 mb-5">
+                <h3
+                  className="font-ui text-[11px] font-semibold tracking-[0.18em] uppercase text-muted-foreground/70 shrink-0"
+                >
+                  {category}
+                </h3>
+                <div className="flex-1 h-px bg-border/40" />
+                <span className="font-ui text-[10px] text-muted-foreground/40">{skills.length}</span>
+              </div>
+
+              {/* Skill chips */}
+              <div className="flex flex-wrap gap-2 font-ui">
+                {skills.map((skill, idx) => (
+                  <motion.div
+                    key={skill._id}
+                    initial={{ opacity: 0, scale: 0.94 }}
+                    animate={inView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: 0.28, delay: catIdx * 0.06 + idx * 0.035 }}
+                    whileHover={{ y: -2 }}
+                    className="group flex items-center gap-2.5 px-3.5 py-2 rounded-md border border-border/55 bg-card/50 cursor-default hover:border-primary/35 hover:bg-card/80 transition-all duration-200"
+                  >
+                    {/* 5-dot strength indicator */}
+                    <div className="flex items-end gap-[3px] h-3.5">
+                      {[...Array(5)].map((_, i) => {
+                        const filled = i < Math.round(skill.strength / 20);
+                        return (
+                          <div
+                            key={i}
+                            className={`w-[3px] rounded-full transition-colors ${filled ? "bg-primary/70" : "bg-border/50"
+                              }`}
+                            style={{ height: `${40 + i * 12}%` }}
+                          />
+                        );
+                      })}
+                    </div>
+                    <span className="text-[13px] font-medium text-foreground/90">{skill.name}</span>
+                    {/* Level badge — appears on hover */}
+                    <span
+                      className={`text-[9px] font-semibold tracking-wide uppercase px-1.5 py-0.5 rounded border opacity-0 group-hover:opacity-100 transition-opacity ${levelColor(skill.strength)}`}
+                    >
+                      {levelLabel(skill.strength)}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.section>
+          );
+        })}
       </div>
+
+      {/* ── Summary stat bar ── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        className="mt-16 grid grid-cols-3 gap-0 border border-border/50 rounded-lg overflow-hidden font-ui"
+      >
+        {[
+          { value: LOCAL_SKILLS.length, label: "Technologies" },
+          { value: `${avgStrength}%`, label: "Avg. Proficiency" },
+          { value: CATEGORIES.length, label: "Domains" },
+        ].map(({ value, label }, i) => (
+          <div
+            key={label}
+            className={`flex flex-col items-center justify-center py-8 gap-1 bg-card/40 ${i < 2 ? "border-r border-border/50" : ""
+              }`}
+          >
+            <span
+              className="text-3xl font-bold gradient-text"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              {value}
+            </span>
+            <span className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground/60">
+              {label}
+            </span>
+          </div>
+        ))}
+      </motion.div>
     </div>
   );
 }

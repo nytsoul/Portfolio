@@ -45,7 +45,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
         }}
       />
 
-      <div className="w-full max-w-7xl mx-auto px-6 lg:px-10 pt-24 pb-16">
+      <div className="w-full px-6 lg:px-16 pt-24 pb-16">
         {/* Main hero grid */}
         <div className="grid lg:grid-cols-[1fr_360px] gap-16 xl:gap-28 items-center min-h-[calc(100vh-12rem)]">
 

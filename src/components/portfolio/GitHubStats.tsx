@@ -2,11 +2,19 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Code2, Trophy, Target, GitFork, Star, Users, ExternalLink } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useGitHubStats, useProjects } from "@/hooks/use-api";
+import { ProcessedProject, GitHubStats as GitHubStatsType } from "@/lib/github-service";
 
 export default function GitHubStats() {
   const username = import.meta.env.VITE_GITHUB_USERNAME || "nytsoul";
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+
+  const { data: statsData } = useGitHubStats(username) as { data: GitHubStatsType | null };
+  const { data: projectsData } = useProjects() as { data: ProcessedProject[] | undefined };
+
+  const stats = statsData || null;
+  const projects = projectsData || [];
 
   const handleImageError = (imageType: string) => {
     setImageErrors(prev => ({ ...prev, [imageType]: true }));
@@ -26,14 +34,19 @@ export default function GitHubStats() {
     },
   };
 
-  // Fallback stats data
-  const fallbackStats = {
-    repos: "30+",
-    commits: "500+", 
-    prs: "50+",
-    issues: "25+",
-    stars: "100+",
-    followers: "50+"
+  const totals = useMemo(() => {
+    if (!projects.length) return { stars: 0, forks: 0 };
+    return projects.reduce((acc: any, p: any) => ({
+      stars: acc.stars + (p.stars || 0),
+      forks: acc.forks + (p.forks || 0),
+    }), { stars: 0, forks: 0 });
+  }, [projects]);
+
+  const displayStats = {
+    repos: stats?.publicRepos || projects.length || "30+",
+    stars: totals.stars || "100+",
+    followers: stats?.followers || "50+",
+    forks: totals.forks || "20+",
   };
 
   const StatCard = ({ title, value, icon: Icon, color }: any) => (
@@ -64,9 +77,9 @@ export default function GitHubStats() {
                   <p className="text-muted-foreground">@{username}</p>
                 </div>
               </div>
-              <a 
-                href={`https://github.com/${username}`} 
-                target="_blank" 
+              <a
+                href={`https://github.com/${username}`}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors"
               >
@@ -88,13 +101,11 @@ export default function GitHubStats() {
               </div>
               <h3 className="text-xl font-semibold">GitHub Overview</h3>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-              <StatCard title="Repositories" value={fallbackStats.repos} icon={GitFork} color="bg-primary/10" />
-              <StatCard title="Commits" value={fallbackStats.commits} icon={Code2} color="bg-chart-2/10" />
-              <StatCard title="Pull Requests" value={fallbackStats.prs} icon={Target} color="bg-chart-3/10" />
-              <StatCard title="Issues" value={fallbackStats.issues} icon={Users} color="bg-chart-4/10" />
-              <StatCard title="Stars Received" value={fallbackStats.stars} icon={Star} color="bg-chart-5/10" />
-              <StatCard title="Followers" value={fallbackStats.followers} icon={Users} color="bg-primary/10" />
+            <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+              <StatCard title="Repositories" value={displayStats.repos} icon={GitFork} color="bg-primary/10" />
+              <StatCard title="Stars Received" value={displayStats.stars} icon={Star} color="bg-chart-5/10" />
+              <StatCard title="Total Forks" value={displayStats.forks} icon={GitFork} color="bg-chart-2/10" />
+              <StatCard title="Followers" value={displayStats.followers} icon={Users} color="bg-primary/10" />
             </div>
           </CardContent>
         </Card>
@@ -126,9 +137,9 @@ export default function GitHubStats() {
                 <p className="text-muted-foreground">
                   GitHub contribution graph temporarily unavailable
                 </p>
-                <a 
-                  href={`https://github.com/${username}`} 
-                  target="_blank" 
+                <a
+                  href={`https://github.com/${username}`}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 mt-4 text-primary hover:underline"
                 >

@@ -45,11 +45,11 @@ export default function Navigation() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-            ? "glass-strong shadow-xl shadow-black/40 border-b border-border/50"
-            : "bg-transparent"
+          ? "glass-strong shadow-xl shadow-black/40 border-b border-border/50"
+          : "bg-transparent"
           }`}
       >
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+        <div className="w-full px-6 lg:px-16">
           <div className="flex items-center justify-between h-[58px]">
             {/* Logo — Playfair Display italic monogram */}
             <button
@@ -76,8 +76,8 @@ export default function Navigation() {
                     key={item.name}
                     onClick={() => scrollTo(item.href)}
                     className={`relative px-4 py-2 text-[13px] font-medium tracking-wide transition-all duration-200 ${isActive
-                        ? "text-foreground"
-                        : "text-muted-foreground hover:text-foreground"
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
                       }`}
                   >
                     {item.name}
@@ -124,7 +124,7 @@ export default function Navigation() {
           animate={{ opacity: 1, y: 0 }}
           className="fixed top-[58px] left-0 right-0 z-40 glass-strong border-b border-border/50 md:hidden"
         >
-          <div className="max-w-7xl mx-auto px-6 py-4 space-y-0.5 font-ui">
+          <div className="w-full px-6 py-4 space-y-0.5 font-ui">
             {navItems.map((item) => {
               const isActive = activeSection === item.href.slice(1);
               return (
@@ -132,8 +132,8 @@ export default function Navigation() {
                   key={item.name}
                   onClick={() => scrollTo(item.href)}
                   className={`w-full text-left px-3 py-2.5 text-[13px] font-medium rounded-md transition-colors ${isActive
-                      ? "text-primary bg-primary/8"
-                      : "text-muted-foreground hover:text-foreground hover:bg-accent/40"
+                    ? "text-primary bg-primary/8"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent/40"
                     }`}
                 >
                   {item.name}
