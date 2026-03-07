@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Briefcase, GraduationCap, Trophy, Calendar } from "lucide-react";
-import { useInView } from "react-intersection-observer";
+// useInView removed since timeline is always visible
+
 
 interface JourneyItem {
   year: string;
@@ -46,8 +47,9 @@ const containerVariants = {
   },
 };
 
+// itemVariants now accepts a `custom` payload which indicates the starting x-offset
 const itemVariants = {
-  hidden: { opacity: 0, x: -40 },
+  hidden: (offset: number) => ({ opacity: 0, x: offset }),
   visible: {
     opacity: 1,
     x: 0,
@@ -56,38 +58,61 @@ const itemVariants = {
 };
 
 export default function JourneyTimeline() {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  // animation trigger always visible (no intersection observer)
 
   return (
     <motion.div
-      ref={ref}
       variants={containerVariants}
       initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-      className="relative"
+      animate="visible"
+      className="relative flex justify-center"
     >
-      {/* vertical line */}
-      <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-primary/60 to-primary/20" />
+      {/* constrain total width, center everything */}
+      <div className="relative w-full max-w-3xl">
+        {/* vertical timeline line (moves to center on medium+ screens) */}
+        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-primary/60 to-primary/20" />
 
-      <div className="space-y-14">
-        {journeyData.map((item, idx) => (
-          <motion.div
-            key={idx}
-            variants={itemVariants}
-            className="relative flex items-start pl-12"
-          >
-            {/* dot with icon */}
-            <div className="absolute left-0 -translate-x-1/2 w-10 h-10 rounded-full bg-gradient-to-br from-primary to-chart-2 flex items-center justify-center text-white ring-4 ring-background z-10">
-              {item.icon}
-            </div>
+        <div className="space-y-14">
+          {journeyData.map((item, idx) => {
+            const offset = idx % 2 === 0 ? -40 : 40;
+            return (
+              <motion.div
+                key={idx}
+                variants={itemVariants}
+                custom={offset}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                className={`relative flex items-center ${
+                  idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                } flex-col`}
+              >
+                {/* Dot / icon sits on the central line */}
+                <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-gradient-to-br from-primary to-chart-2 flex items-center justify-center text-white ring-4 ring-background z-10">
+                  {item.icon}
+                </div>
 
-            {/* content card */}
-            <div className="bg-card/80 backdrop-blur-sm p-5 rounded-xl shadow-lg hover:shadow-primary/25 transition-all w-full">
-              <span className="text-sm font-semibold text-primary">{item.year}</span>
-              <p className="mt-1 text-foreground leading-snug">{item.event}</p>
-            </div>
-          </motion.div>
-        ))}
+                {/* entry card */}
+                <div
+                  className={`w-full md:w-4/12 ml-12 md:ml-0 ${
+                    idx % 2 === 0
+                      ? "md:mr-auto md:pr-8"
+                      : "md:ml-auto md:pl-8"
+                  }`}
+                >
+                  <div className="bg-background border border-border/60 p-4 rounded-xl shadow-md hover:shadow-primary/20 transition-all">
+                    <span className="text-sm font-semibold text-primary">
+                      {item.year}
+                    </span>
+                    <p className="mt-1 text-foreground leading-snug text-sm">
+                      {item.event}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </motion.div>
   );

@@ -139,7 +139,7 @@ export { Toaster } from "./sonner"; // ~8KB - Toast notifications
  *    const Calendar = lazy(() => import("@/components/ui/calendar").then(m => ({ default: m.Calendar })));
  *
  * 3. Group imports by route:
- *    - Landing page: Button, Card, Badge (small components only)
+ *    - Other pages: Button, Card, Badge (small components only)
  *    - Dashboard: + Chart, Tabs, Select (add medium components)
  *    - Admin: + Command, Carousel (add large components as needed)
  *

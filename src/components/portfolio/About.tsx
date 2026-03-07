@@ -74,9 +74,9 @@ export default function About() {
         </h2>
       </motion.div>
 
-      {/* ── Bio + Timeline ── */}
-      <div className="grid lg:grid-cols-[1fr_360px] gap-10 lg:gap-16 mb-20">
-        {/* Bio */}
+      {/* ── Bio + Journey Timeline ── */}
+      <div className="space-y-20 mb-20">
+        {/* Bio section */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -112,7 +112,7 @@ export default function About() {
           </div>
         </motion.div>
 
-        {/* Journey timeline now handled by dedicated component */}
+        {/* Journey timeline placed below bio on all screen sizes */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
