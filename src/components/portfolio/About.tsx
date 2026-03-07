@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Briefcase, Code, Trophy, GraduationCap, ArrowUpRight } from "lucide-react";
 import GitHubStats from "./GitHubStats";
 import CompetitiveProgramming from "./CompetitiveProgramming";
+import JourneyTimeline from "./JourneyTimeline";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function About() {
@@ -36,14 +37,15 @@ export default function About() {
     },
   ];
 
-  const timeline = [
-    { year: "2024", event: "Enrolled — SSN College of Engineering, Chennai" },
-    { year: "2024", event: "Began competitive programming on Codeforces" },
-    { year: "2025", event: "Shipped first full-stack production application" },
-    { year: "2025", event: "SIH finalist in December" },
-    { year: "2026", event: "Open to internships & collaborative projects" },
+  // journey entries moved into dedicated component for an improved layout
+  // const timeline = [
+  //   { year: "2024", event: "Enrolled — SSN College of Engineering, Chennai" },
+  //   { year: "2024", event: "Began competitive programming on Codeforces" },
+  //   { year: "2025", event: "Shipped first full-stack production application" },
+  //   { year: "2025", event: "SIH finalist in December" },
+  //   { year: "2026", event: "Open to internships & collaborative projects" },
+  // ];
 
-  ];
 
   const quickFacts = [
     { label: "Location", value: "Chennai, India" },
@@ -110,7 +112,7 @@ export default function About() {
           </div>
         </motion.div>
 
-        {/* Timeline */}
+        {/* Journey timeline now handled by dedicated component */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -118,22 +120,7 @@ export default function About() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <p className="section-label mb-6">Journey</p>
-          <div className="space-y-0">
-            {timeline.map(({ year, event }, i) => (
-              <div key={i} className="flex gap-4 pb-7 last:pb-0">
-                <div className="flex flex-col items-center shrink-0">
-                  <div className="w-2 h-2 rounded-full bg-primary mt-[5px]" />
-                  {i < timeline.length - 1 && (
-                    <div className="w-px flex-1 bg-border/50 mt-1.5" />
-                  )}
-                </div>
-                <div>
-                  <span className="font-ui text-[10px] font-semibold tracking-[0.12em] uppercase text-primary/70">{year}</span>
-                  <p className="text-sm text-foreground/80 leading-snug mt-0.5">{event}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <JourneyTimeline />
         </motion.div>
       </div>
 
