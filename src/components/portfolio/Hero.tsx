@@ -1,7 +1,12 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { Github, Mail, Linkedin, MapPin, ArrowDown, Instagram } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
 import TypeWriter from "./TypeWriter";
+import CountUp from "@/components/motion/CountUp";
+import Magnetic from "@/components/motion/Magnetic";
+import { CURATED_PROJECTS } from "@/data/project-config";
 
 interface HeroProps {
   profile: any;
@@ -9,12 +14,19 @@ interface HeroProps {
 }
 
 export default function Hero({ profile, githubStats }: HeroProps) {
+  const router = useRouter();
   const stats = [
-    { label: "Repositories", value: githubStats?.publicRepos ?? 0 },
-    { label: "GitHub Stars", value: githubStats?.totalStars ?? 0 },
-    { label: "CP Problems", value: "300+" },
-    { label: "Projects Built", value: "30+" },
+    { label: "Repositories", value: Number(githubStats?.publicRepos ?? 0), suffix: "" },
+    { label: "GitHub Stars", value: Number(githubStats?.totalStars ?? 0), suffix: "" },
+    { label: "CP Problems", value: 50, suffix: "+" },
+    { label: "Projects Built", value: CURATED_PROJECTS.length, suffix: "" },
   ];
+
+  const goSectionOrRoute = (id: string, route: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+    else router.push(route);
+  };
 
   const socialLinks = [
     profile?.github && { icon: Github, href: `https://github.com/${profile.github}`, label: "GitHub" },
@@ -47,7 +59,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
 
       <div className="w-full px-6 lg:px-16 pt-24 pb-16">
         {/* Main hero grid */}
-        <div className="grid lg:grid-cols-[1fr_360px] gap-16 xl:gap-28 items-center min-h-[calc(100vh-12rem)]">
+        <div className="max-w-3xl min-h-[calc(100vh-12rem)] flex flex-col justify-center">
 
           {/* ── Left: Text ── */}
           <div>
@@ -65,14 +77,25 @@ export default function Hero({ profile, githubStats }: HeroProps) {
               Open to internships &amp; collaborations
             </motion.div>
 
-            {/* First name only */}
+            {/* Name — staggered letter rise */}
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
             >
-              <h1 className="text-[clamp(3.5rem,8vw,6.5rem)] font-bold leading-[1.0] mb-6">
-                Neshun
+              <h1 className="text-[clamp(3.5rem,8vw,6.5rem)] font-bold leading-[1.0] mb-6" aria-label="Neshun">
+                {"Neshun".split("").map((ch, i) => (
+                  <motion.span
+                    key={i}
+                    aria-hidden
+                    initial={{ opacity: 0, y: 48, rotate: 4 }}
+                    animate={{ opacity: 1, y: 0, rotate: 0 }}
+                    transition={{ duration: 0.7, delay: 0.25 + i * 0.055, ease: [0.22, 1, 0.36, 1] }}
+                    className="inline-block gradient-text"
+                  >
+                    {ch}
+                  </motion.span>
+                ))}
               </h1>
             </motion.div>
 
@@ -120,7 +143,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
               className="text-base text-muted-foreground leading-relaxed max-w-[480px] mb-8"
             >
               {profile?.bio ??
-                "2nd-year CS Engineering student at SSN College of Engineering, Chennai — building robust, scalable systems with a focus on clean architecture and exceptional user experiences."}
+                "3rd-year CS Engineering student at SSN College of Engineering, Chennai — building robust, scalable systems with a focus on clean architecture and exceptional user experiences."}
             </motion.p>
 
             {/* CTAs */}
@@ -130,18 +153,22 @@ export default function Hero({ profile, githubStats }: HeroProps) {
               transition={{ delay: 0.6 }}
               className="font-ui flex flex-wrap items-center gap-3 mb-8"
             >
-              <button
-                onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-6 py-2.5 text-sm font-semibold bg-primary text-primary-foreground rounded hover:opacity-90 transition-opacity shadow-md shadow-primary/20"
-              >
-                View Projects
-              </button>
-              <button
-                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-6 py-2.5 text-sm font-medium border border-border/70 text-foreground/80 rounded hover:bg-accent/40 hover:text-foreground transition-all"
-              >
-                Get in Touch
-              </button>
+              <Magnetic strength={0.25}>
+                <button
+                  onClick={() => goSectionOrRoute("projects", "/work")}
+                  className="px-7 py-3 text-sm font-semibold bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity shadow-lg shadow-primary/25"
+                >
+                  View Projects
+                </button>
+              </Magnetic>
+              <Magnetic strength={0.25}>
+                <button
+                  onClick={() => goSectionOrRoute("contact", "/contact")}
+                  className="px-7 py-3 text-sm font-medium border border-border/70 text-foreground/80 rounded-lg hover:bg-accent/40 hover:text-foreground hover:border-primary/40 transition-all"
+                >
+                  Get in Touch
+                </button>
+              </Magnetic>
             </motion.div>
 
             {/* Social icons */}
@@ -166,50 +193,30 @@ export default function Hero({ profile, githubStats }: HeroProps) {
             </motion.div>
           </div>
 
-          {/* ── Right: Portrait + Stats ── */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col items-center gap-8 lg:items-end"
-          >
-            {/* Portrait */}
-            <div className="relative">
-              {/* Glow ring */}
-              <div className="absolute -inset-3 rounded-full bg-gradient-to-br from-primary/15 via-transparent to-chart-2/10 blur-2xl" />
-              <div className="relative">
-                <Avatar className="w-56 h-56 lg:w-[260px] lg:h-[260px] ring-1 ring-border/60 ring-offset-4 ring-offset-background shadow-2xl shadow-black/40">
-                  <AvatarImage src={profile?.profileImage || "/profile.jpg"} className="object-cover" />
-                  <AvatarFallback
-                    className="text-5xl font-bold text-foreground/60"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: "italic" }}
-                  >
-                    {profile?.name?.split(" ").map((n: string) => n[0]).join("") ?? "NR"}
-                  </AvatarFallback>
-                </Avatar>
-                {/* Corner accent */}
-                <div className="absolute -bottom-2 -right-2 w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-                  <span className="text-primary text-lg font-bold italic" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    ✦
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-2.5 w-full max-w-[280px] font-ui">
-              {stats.map(({ label, value }) => (
-                <div
-                  key={label}
-                  className="bg-card/60 border border-border/60 rounded-lg p-4 text-center hover:border-primary/30 transition-colors"
-                >
-                  <div className="text-2xl font-bold text-foreground mb-0.5">{value}</div>
-                  <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">{label}</div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
         </div>
+
+        {/* ── Stats strip ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mt-16 font-ui"
+        >
+          {stats.map(({ label, value, suffix }) => (
+            <motion.div
+              key={label}
+              whileHover={{ y: -3 }}
+              className="bg-card/60 border border-border/60 rounded-xl p-4 text-center hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
+            >
+              <CountUp
+                to={value}
+                suffix={suffix}
+                className="block text-2xl font-bold text-foreground mb-0.5"
+              />
+              <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">{label}</div>
+            </motion.div>
+          ))}
+        </motion.div>
 
         {/* Scroll cue */}
         <motion.div

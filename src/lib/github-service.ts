@@ -1,5 +1,5 @@
 import { env } from './env';
-import { getProjectMetadata } from '@/data/project-config';
+import { getProjectMetadata, deploymentScreenshot } from '@/data/project-config';
 
 // Types
 export interface GitHubRepo {
@@ -42,6 +42,10 @@ export interface GitHubStats {
     publicRepos: number;
     followers: number;
     following: number;
+    /** Live sum of stars across all non-fork public repos. */
+    totalStars: number;
+    /** Live sum of forks across all non-fork public repos. */
+    totalForks: number;
     lastUpdated: Date;
 }
 
@@ -258,7 +262,7 @@ export async function fetchGitHubData(username: string = env.github.username): P
                     name: repo.name,
                     description: metadata?.description || repo.description || undefined,
                     category: categorizeProject(repo),
-                    image: metadata?.image,
+                    image: metadata?.image || deploymentScreenshot(repo.homepage || repo.html_url),
                     languages: repo.language ? [repo.language] : [],
                     topics: repo.topics || [],
                     stars: repo.stargazers_count || 0,
@@ -315,13 +319,15 @@ export async function fetchGitHubData(username: string = env.github.username): P
             icon: getSkillIcon(name),
         }));
 
-        // GitHub stats
+        // GitHub stats — totals computed live from fetched repos
         const stats: GitHubStats = {
             userId: 'github',
             username,
             publicRepos: userData.public_repos || 0,
             followers: userData.followers || 0,
             following: userData.following || 0,
+            totalStars: projects.reduce((sum, p) => sum + (p.stars || 0), 0),
+            totalForks: projects.reduce((sum, p) => sum + (p.forks || 0), 0),
             lastUpdated: new Date(),
         };
 

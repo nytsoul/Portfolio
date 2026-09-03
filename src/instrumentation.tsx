@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Collapsible,
@@ -36,17 +38,17 @@ async function reportErrorToVly(errorData: {
   lineno?: number;
   colno?: number;
 }) {
-  if (!import.meta.env.VITE_VLY_APP_ID) {
+  if (!process.env.NEXT_PUBLIC_VLY_APP_ID) {
     return;
   }
 
   try {
-    await fetch(import.meta.env.VITE_VLY_MONITORING_URL, {
+    await fetch(process.env.NEXT_PUBLIC_VLY_MONITORING_URL!, {
       method: "POST",
       body: JSON.stringify({
         ...errorData,
         url: window.location.href,
-        projectSemanticIdentifier: import.meta.env.VITE_VLY_APP_ID,
+        projectSemanticIdentifier: process.env.NEXT_PUBLIC_VLY_APP_ID,
       }),
     });
   } catch (error) {
@@ -90,7 +92,7 @@ function ErrorDialog({
         </div>
         <DialogFooter>
           <a
-            href={`https://vly.ai/project/${import.meta.env.VITE_VLY_APP_ID}`}
+            href={`https://vly.ai/project/${process.env.NEXT_PUBLIC_VLY_APP_ID}`}
             target="_blank"
           >
             <Button>
@@ -187,7 +189,7 @@ export function InstrumentationProvider({
           colno: event.colno,
         });
 
-        if (import.meta.env.VITE_VLY_APP_ID) {
+        if (process.env.NEXT_PUBLIC_VLY_APP_ID) {
           await reportErrorToVly({
             error: event.message,
             stackTrace: event.error?.stack,
@@ -205,7 +207,7 @@ export function InstrumentationProvider({
       try {
         console.error(event);
 
-        if (import.meta.env.VITE_VLY_APP_ID) {
+        if (process.env.NEXT_PUBLIC_VLY_APP_ID) {
           await reportErrorToVly({
             error: event.reason.message,
             stackTrace: event.reason.stack,

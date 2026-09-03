@@ -1,6 +1,10 @@
+"use client";
+
 import { motion } from "framer-motion";
-import { Mail, Github, Linkedin, Instagram, Code, ExternalLink, ArrowUpRight, MapPin } from "lucide-react";
+import { Mail, Github, Linkedin, Instagram, Code, Code2, ExternalLink, ArrowUpRight, MapPin } from "lucide-react";
 import { useInView } from "react-intersection-observer";
+import Magnetic from "@/components/motion/Magnetic";
+import { env } from "@/lib/env";
 
 interface ContactProps {
   profile: any;
@@ -41,9 +45,16 @@ export default function Contact({ profile }: ContactProps) {
     {
       icon: Code,
       label: "Codeforces",
-      value: "nytsoul",
-      href: `https://codeforces.com/profile/${import.meta.env.VITE_CODEFORCES_USERNAME || "nytsoul"}`,
+      value: env.competitive.codeforces.username || "nytsoul",
+      href: `https://codeforces.com/profile/${env.competitive.codeforces.username || "nytsoul"}`,
       note: "Competitive programming",
+    },
+    {
+      icon: Code2,
+      label: "LeetCode",
+      value: env.competitive.leetcode.username || "nyt__soul",
+      href: `https://leetcode.com/${env.competitive.leetcode.username || "nyt__soul"}`,
+      note: "Algorithm practice",
     },
   ].filter((m) => m.href);
 
@@ -119,13 +130,15 @@ export default function Contact({ profile }: ContactProps) {
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">
               Whether it's a collaboration, internship, or freelance engagement — I'm available and responsive.
             </p>
-            <a
-              href={`mailto:${profile?.email || "neshun7413@gmail.com"}`}
-              className="font-ui flex items-center justify-center gap-2 w-full px-5 py-2.5 text-sm font-semibold bg-primary text-primary-foreground rounded hover:opacity-90 transition-opacity shadow-md shadow-primary/15"
-            >
-              <Mail className="w-4 h-4" />
-              Send a Message
-            </a>
+            <Magnetic strength={0.2}>
+              <a
+                href={`mailto:${profile?.email || "neshun7413@gmail.com"}`}
+                className="font-ui flex items-center justify-center gap-2 w-full px-5 py-3 text-sm font-semibold bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+              >
+                <Mail className="w-4 h-4" />
+                Send a Message
+              </a>
+            </Magnetic>
 
             {profile?.location && (
               <div className="font-ui flex items-center gap-1.5 text-xs text-muted-foreground/60 mt-5">

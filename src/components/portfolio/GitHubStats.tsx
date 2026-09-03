@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -5,9 +7,10 @@ import { Code2, Trophy, Target, GitFork, Star, Users, ExternalLink } from "lucid
 import { useState, useMemo } from "react";
 import { useGitHubStats, useProjects } from "@/hooks/use-api";
 import { ProcessedProject, GitHubStats as GitHubStatsType } from "@/lib/github-service";
+import { env } from "@/lib/env";
 
 export default function GitHubStats() {
-  const username = import.meta.env.VITE_GITHUB_USERNAME || "nytsoul";
+  const username = env.github.username;
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   const { data: statsData } = useGitHubStats(username) as { data: GitHubStatsType | null };
@@ -42,12 +45,26 @@ export default function GitHubStats() {
     }), { stars: 0, forks: 0 });
   }, [projects]);
 
+  const hasLive = projects.length > 0 || (stats?.publicRepos ?? 0) > 0;
   const displayStats = {
-    repos: stats?.publicRepos || projects.length || "30+",
-    stars: totals.stars || "100+",
-    followers: stats?.followers || "50+",
-    forks: totals.forks || "20+",
+    repos: stats?.publicRepos || projects.length || "–",
+    stars: stats?.totalStars ?? (hasLive ? totals.stars : "–"),
+    followers: stats?.followers ?? (hasLive ? 0 : "–"),
+    forks: stats?.totalForks ?? (hasLive ? totals.forks : "–"),
   };
+
+  // Top languages across live projects — no hardcoded list
+  const topLanguages = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const p of projects as any[]) {
+      for (const lang of p.languages ?? []) counts.set(lang, (counts.get(lang) ?? 0) + 1);
+      for (const topic of (p.topics ?? []).slice(0, 3)) {
+        const name = String(topic).replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+        counts.set(name, (counts.get(name) ?? 0) + 0.5);
+      }
+    }
+    return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8).map(([name]) => name);
+  }, [projects]);
 
   const StatCard = ({ title, value, icon: Icon, color }: any) => (
     <div className="flex items-center gap-3 p-4 rounded-lg bg-gradient-to-r from-card/50 to-card/20 border border-border/50">
@@ -162,7 +179,7 @@ export default function GitHubStats() {
               <h3 className="text-xl font-semibold">Primary Technologies</h3>
             </div>
             <div className="flex flex-wrap gap-2">
-              {['JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'Java', 'MongoDB', 'PostgreSQL'].map((tech) => (
+              {(topLanguages.length > 0 ? topLanguages : ["TypeScript"]).map((tech) => (
                 <Badge key={tech} variant="secondary" className="px-3 py-1">
                   {tech}
                 </Badge>

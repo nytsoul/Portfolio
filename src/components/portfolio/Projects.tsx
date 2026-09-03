@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import { useProjectCategories, useProjects } from "@/hooks/use-api";
 import { ExternalLink, Github, Star, GitFork, Search, X } from "lucide-react";
@@ -10,12 +10,12 @@ export default function Projects() {
   const [searchQuery, setSearchQuery] = useState("");
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.04 });
 
-  const categoriesData = useProjectCategories() ?? ({} as any);
-  const categories = categoriesData.data ?? [];
-  const projectsData =
-    useProjects({ category: selectedCategory === "all" ? undefined : selectedCategory }) ??
-    ({} as any);
-  const projects = projectsData.data ?? [];
+  const categoriesData = useProjectCategories();
+  const categories = (categoriesData.data ?? []) as string[];
+  const projectsData = useProjects({
+    category: selectedCategory === "all" ? undefined : selectedCategory,
+  });
+  const projects = (projectsData.data ?? []) as any[];
 
   const filteredProjects = useMemo(() => {
     if (!searchQuery.trim()) return projects;
@@ -98,23 +98,46 @@ export default function Projects() {
       </motion.div>
 
       {/* ── Grid ── */}
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+        <AnimatePresence mode="popLayout">
         {filteredProjects?.map((project: any, index: number) => (
           <motion.article
             key={project._id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4, delay: index * 0.065 }}
-            whileHover={{ y: -3 }}
-            className="group flex flex-col bg-card/50 border border-border/55 rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-250"
+            layout
+            initial={{ opacity: 0, y: 24, scale: 0.97 }}
+            animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            exit={{ opacity: 0, scale: 0.94 }}
+            transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
+            whileHover={{ y: -6 }}
+            className="group flex flex-col bg-card/50 border border-border/55 rounded-xl overflow-hidden hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300"
           >
+            {/* Preview — live deployment screenshot */}
+            <div className="relative aspect-[16/10] overflow-hidden bg-background/60 border-b border-border/40">
+              <img
+                src={project.image || "/images/project-web.png"}
+                alt={`${project.name} preview`}
+                loading="lazy"
+                onError={(e) => {
+                  const t = e.currentTarget;
+                  if (!t.src.endsWith("/images/project-web.png")) t.src = "/images/project-web.png";
+                }}
+                className="w-full h-full object-cover object-top group-hover:scale-[1.06] transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-80" />
+              {project.homepage && (
+                <span className="absolute top-3 right-3 font-ui flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-full bg-background/80 backdrop-blur border border-border/50 text-primary">
+                  <span className="w-1.5 h-1.5 rounded-full bg-chart-3 animate-pulse" />
+                  Live
+                </span>
+              )}
+            </div>
             {/* Body */}
             <div className="p-5 flex-1">
               {/* Header row */}
               <div className="flex items-start justify-between gap-2 mb-3">
                 <div>
                   <h3
-                    className="text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-snug"
+                    className="text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-snug"
                     style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                   >
                     {project.name}
@@ -178,6 +201,7 @@ export default function Projects() {
             </div>
           </motion.article>
         ))}
+        </AnimatePresence>
       </div>
 
       {/* Empty states */}

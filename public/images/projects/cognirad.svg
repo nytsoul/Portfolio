@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <radialGradient id="glow" cx="72%" cy="28%" r="85%">
+      <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5eead4"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.5" fill="#2dd4bf" opacity="0.35"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="450" fill="#0A0C11"/>
+  <rect width="800" height="450" fill="url(#dots)" opacity="0.30"/>
+  <rect width="800" height="450" fill="url(#glow)"/>
+  <g transform="translate(470,105) scale(9)" fill="none" stroke="url(#stroke)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.92">
+    <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
+    <path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+    <path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
+    <path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+    <path d="M7 12h10"/>
+  </g>
+  <rect x="48" y="296" width="56" height="4" rx="2" fill="#2dd4bf"/>
+  <text x="48" y="330" font-family="Inter, system-ui, sans-serif" font-size="13" letter-spacing="4" fill="#2dd4bf" opacity="0.9">X-RAY AI ANALYSIS</text>
+  <text x="44" y="384" font-family="Inter, system-ui, sans-serif" font-size="58" font-weight="800" fill="#F2EFE6">Cognirad</text>
+</svg>

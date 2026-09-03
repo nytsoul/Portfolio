@@ -1,37 +1,12 @@
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+"use client";
 
-const LOCAL_SKILLS = [
-  { _id: "html", name: "HTML5", category: "Languages", strength: 93 },
-  { _id: "css", name: "CSS3", category: "Languages", strength: 91 },
-  { _id: "js", name: "JavaScript", category: "Languages", strength: 92 },
-  { _id: "ts", name: "TypeScript", category: "Languages", strength: 95 },
-  { _id: "java", name: "Java", category: "Languages", strength: 82 },
-  { _id: "py", name: "Python", category: "Languages", strength: 85 },
-  { _id: "c", name: "C", category: "Languages", strength: 80 },
-  { _id: "cpp", name: "C++", category: "Languages", strength: 78 },
-  { _id: "react", name: "React", category: "Frontend", strength: 90 },
-  { _id: "next", name: "Next.js", category: "Frontend", strength: 88 },
-  { _id: "tailwind", name: "Tailwind", category: "Frontend", strength: 92 },
-  { _id: "bootstrap", name: "Bootstrap", category: "Frontend", strength: 85 },
-  { _id: "node", name: "Node.js", category: "Backend", strength: 86 },
-  { _id: "express", name: "Express", category: "Backend", strength: 84 },
-  { _id: "firebase", name: "Firebase", category: "Backend", strength: 85 },
-  { _id: "rest", name: "REST APIs", category: "Backend", strength: 88 },
-  { _id: "mongoose", name: "Mongoose", category: "Backend", strength: 83 },
-  { _id: "mysql", name: "MySQL", category: "Databases", strength: 85 },
-  { _id: "mongo", name: "MongoDB", category: "Databases", strength: 87 },
-  { _id: "postgres", name: "PostgreSQL", category: "Databases", strength: 78 },
-  { _id: "sqlite", name: "SQLite", category: "Databases", strength: 82 },
-  { _id: "supabase", name: "Supabase", category: "Databases", strength: 80 },
-  { _id: "git", name: "Git", category: "Dev Tools", strength: 90 },
-  { _id: "github", name: "GitHub", category: "Dev Tools", strength: 92 },
-  { _id: "vscode", name: "VS Code", category: "Dev Tools", strength: 88 },
-  { _id: "linux", name: "Linux", category: "Dev Tools", strength: 75 },
-  { _id: "docker", name: "Docker", category: "Dev Tools", strength: 75 },
-];
-
-const CATEGORIES = ["Languages", "Frontend", "Backend", "Databases", "Dev Tools"];
+import { AnimatePresence, motion } from "framer-motion";
+import { useMemo, useState } from "react";
+import { Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { LOCAL_SKILLS, SKILL_CATEGORIES } from "@/data/portfolio-data";
+import TechIcon from "@/components/icons/TechIcon";
+import { cn } from "@/lib/utils";
 
 function levelLabel(s: number) {
   if (s >= 90) return "Expert";
@@ -47,127 +22,200 @@ function levelColor(s: number) {
   return "text-muted-foreground border-border/60 bg-muted/30";
 }
 
+const TABS = ["All", ...SKILL_CATEGORIES] as const;
+
 export default function Skills() {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.04 });
+  const [tab, setTab] = useState<(typeof TABS)[number]>("All");
+  const [query, setQuery] = useState("");
 
-  const byCategory = CATEGORIES.reduce((acc, cat) => {
-    acc[cat] = LOCAL_SKILLS.filter((s) => s.category === cat);
-    return acc;
-  }, {} as Record<string, typeof LOCAL_SKILLS>);
+  const counts = useMemo(() => {
+    const map: Record<string, number> = { All: LOCAL_SKILLS.length };
+    for (const c of SKILL_CATEGORIES) map[c] = LOCAL_SKILLS.filter((s) => s.category === c).length;
+    return map;
+  }, []);
 
-  const avgStrength = Math.round(
-    LOCAL_SKILLS.reduce((s, sk) => s + sk.strength, 0) / LOCAL_SKILLS.length
-  );
+  const visible = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return LOCAL_SKILLS.filter(
+      (s) =>
+        (tab === "All" || s.category === tab) &&
+        (!q || s.name.toLowerCase().includes(q) || s.category.toLowerCase().includes(q)),
+    );
+  }, [tab, query]);
+
+  const avg = Math.round(LOCAL_SKILLS.reduce((a, s) => a + s.strength, 0) / LOCAL_SKILLS.length);
+  const top = LOCAL_SKILLS.reduce((a, b) => (b.strength > a.strength ? b : a));
 
   return (
-    <div className="w-full px-6 lg:px-16" ref={ref}>
-
+    <div className="w-full px-6 lg:px-16">
       {/* ── Header ── */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="mb-16"
+        className="mb-10"
       >
         <p className="section-label mb-4">Skills</p>
         <h2 className="text-5xl lg:text-6xl font-bold">
-          Technologies &amp;{" "}
-          <span className="italic gradient-text">Tools</span>
+          Tools of the <span className="italic gradient-text">trade.</span>
         </h2>
         <p className="text-base text-muted-foreground mt-4 max-w-xl leading-relaxed">
-          A curated set of technologies I've worked with across personal, academic, and collaborative projects.
+          27 technologies across 5 domains — every mark below is the real thing,
+          battle-tested in production projects and hackathons.
         </p>
       </motion.div>
 
-      {/* ── Skills by category ── */}
-      <div className="space-y-12">
-        {CATEGORIES.map((category, catIdx) => {
-          const skills = byCategory[category] ?? [];
-          if (!skills.length) return null;
-          return (
-            <motion.section
-              key={category}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.45, delay: catIdx * 0.07 }}
+      {/* ── Controls: search + category tabs ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+        className="flex flex-col lg:flex-row lg:items-center gap-4 mb-10 font-ui"
+      >
+        <div className="relative w-full lg:max-w-xs">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+          <Input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search technologies…"
+            className="pl-8.5 pr-8 text-sm bg-card/50 border-border/55 h-9 rounded-md focus:border-primary/40"
+          />
+          {query && (
+            <button
+              onClick={() => setQuery("")}
+              aria-label="Clear search"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
             >
-              {/* Category row */}
-              <div className="flex items-center gap-5 mb-5">
-                <h3
-                  className="font-ui text-[11px] font-semibold tracking-[0.18em] uppercase text-muted-foreground/70 shrink-0"
-                >
-                  {category}
-                </h3>
-                <div className="flex-1 h-px bg-border/40" />
-                <span className="font-ui text-[10px] text-muted-foreground/40">{skills.length}</span>
-              </div>
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
 
-              {/* Skill chips */}
-              <div className="flex flex-wrap gap-2 font-ui">
-                {skills.map((skill, idx) => (
-                  <motion.div
-                    key={skill._id}
-                    initial={{ opacity: 0, scale: 0.94 }}
-                    animate={inView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ duration: 0.28, delay: catIdx * 0.06 + idx * 0.035 }}
-                    whileHover={{ y: -2 }}
-                    className="group flex items-center gap-2.5 px-3.5 py-2 rounded-md border border-border/55 bg-card/50 cursor-default hover:border-primary/35 hover:bg-card/80 transition-all duration-200"
-                  >
-                    {/* 5-dot strength indicator */}
-                    <div className="flex items-end gap-[3px] h-3.5">
-                      {[...Array(5)].map((_, i) => {
-                        const filled = i < Math.round(skill.strength / 20);
-                        return (
-                          <div
-                            key={i}
-                            className={`w-[3px] rounded-full transition-colors ${filled ? "bg-primary/70" : "bg-border/50"
-                              }`}
-                            style={{ height: `${40 + i * 12}%` }}
-                          />
-                        );
-                      })}
-                    </div>
-                    <span className="text-[13px] font-medium text-foreground/90">{skill.name}</span>
-                    {/* Level badge — appears on hover */}
+        <div className="flex flex-wrap gap-2">
+          {TABS.map((t) => {
+            const active = tab === t;
+            return (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={cn(
+                  "relative px-3.5 py-1.5 text-[12px] font-medium rounded-full border transition-all duration-200",
+                  active
+                    ? "border-transparent text-primary-foreground"
+                    : "border-border/55 text-muted-foreground hover:border-border hover:text-foreground bg-transparent",
+                )}
+              >
+                {active && (
+                  <motion.span
+                    layoutId="skillTab"
+                    className="absolute inset-0 rounded-full bg-primary shadow-md shadow-primary/20"
+                    transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                  />
+                )}
+                <span className="relative flex items-center gap-1.5">
+                  {t}
+                  <span className={cn("text-[10px] font-mono", active ? "opacity-70" : "opacity-50")}>
+                    {counts[t] ?? 0}
+                  </span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </motion.div>
+
+      {/* ── Icon card grid ── */}
+      <motion.div layout className="grid sm:grid-cols-2 xl:grid-cols-3 gap-3.5">
+        <AnimatePresence mode="popLayout">
+          {visible.map((s) => (
+            <motion.div
+              layout
+              key={s.id}
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.92 }}
+              transition={{ duration: 0.25 }}
+              whileHover={{ y: -4 }}
+              className="group p-5 rounded-xl border border-border/55 bg-card/50 hover:border-primary/40 hover:bg-card/75 hover:shadow-lg hover:shadow-primary/5 transition-colors"
+            >
+              <div className="flex items-start gap-3.5">
+                <TechIcon
+                  skillId={s.id}
+                  skillName={s.name}
+                  className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform duration-200"
+                  imgClassName="w-7 h-7"
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <h4 className="text-[15px] font-semibold text-foreground truncate">{s.name}</h4>
+                    <span className="font-mono text-xs text-primary shrink-0">{s.strength}%</span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="font-ui text-[11px] text-muted-foreground">{s.category}</span>
                     <span
-                      className={`text-[9px] font-semibold tracking-wide uppercase px-1.5 py-0.5 rounded border opacity-0 group-hover:opacity-100 transition-opacity ${levelColor(skill.strength)}`}
+                      className={cn(
+                        "text-[9px] font-semibold tracking-wide uppercase px-1.5 py-px rounded border",
+                        levelColor(s.strength),
+                      )}
                     >
-                      {levelLabel(skill.strength)}
+                      {levelLabel(s.strength)}
                     </span>
-                  </motion.div>
-                ))}
+                  </div>
+                </div>
               </div>
-            </motion.section>
-          );
-        })}
-      </div>
+              <div className="mt-4 h-1.5 rounded-full bg-white/5 overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: `${s.strength}%` }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                  className="h-full rounded-full bg-gradient-to-r from-primary/90 via-primary to-chart-2/80"
+                />
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.div>
 
-      {/* ── Summary stat bar ── */}
+      {visible.length === 0 && (
+        <p className="font-ui text-center py-20 text-sm text-muted-foreground">
+          No match.{" "}
+          <button
+            onClick={() => {
+              setQuery("");
+              setTab("All");
+            }}
+            className="text-primary hover:underline"
+          >
+            Reset filters
+          </button>
+        </p>
+      )}
+
+      {/* ── Summary strip ── */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.5, delay: 0.5 }}
-        className="mt-16 grid grid-cols-3 gap-0 border border-border/50 rounded-lg overflow-hidden font-ui"
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-px bg-border/50 border border-border/50 rounded-xl overflow-hidden font-ui"
       >
         {[
-          { value: LOCAL_SKILLS.length, label: "Technologies" },
-          { value: `${avgStrength}%`, label: "Avg. Proficiency" },
-          { value: CATEGORIES.length, label: "Domains" },
-        ].map(({ value, label }, i) => (
-          <div
-            key={label}
-            className={`flex flex-col items-center justify-center py-8 gap-1 bg-card/40 ${i < 2 ? "border-r border-border/50" : ""
-              }`}
-          >
+          { value: String(LOCAL_SKILLS.length), label: "Technologies" },
+          { value: `${avg}%`, label: "Avg. Proficiency" },
+          { value: `${top.name} ${top.strength}%`, label: "Strongest" },
+          { value: String(SKILL_CATEGORIES.length), label: "Domains" },
+        ].map(({ value, label }) => (
+          <div key={label} className="flex flex-col items-center justify-center py-7 gap-1.5 bg-card/60 px-2">
             <span
-              className="text-3xl font-bold gradient-text"
+              className="text-xl lg:text-2xl font-bold gradient-text text-center leading-tight"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               {value}
             </span>
-            <span className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground/60">
-              {label}
-            </span>
+            <span className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground/60">{label}</span>
           </div>
         ))}
       </motion.div>

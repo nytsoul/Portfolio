@@ -36,12 +36,14 @@ export function useFallbackGitHubStats(dbStats: any) {
       return dbStats;
     }
 
+    // Honest zeros — replaced by live GitHub data once it loads
     return {
       username: env.github.username,
-      publicRepos: 25,
+      publicRepos: 0,
       followers: 0,
       following: 0,
       totalStars: 0,
+      totalForks: 0,
     };
   }, [dbStats]);
 }

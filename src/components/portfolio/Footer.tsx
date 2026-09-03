@@ -1,4 +1,7 @@
+"use client";
+
 import { Github, Linkedin, Mail, MapPin, ArrowUp } from "lucide-react";
+import Link from "next/link";
 
 interface FooterProps {
     profile: any;
@@ -14,10 +17,13 @@ export default function Footer({ profile }: FooterProps) {
     ].filter((l) => l.href);
 
     const navLinks = [
-        { label: "About", href: "#about" },
-        { label: "Projects", href: "#projects" },
-        { label: "Skills", href: "#skills" },
-        { label: "Contact", href: "#contact" },
+        { label: "Home", href: "/" },
+        { label: "Work", href: "/work" },
+        { label: "About", href: "/about" },
+        { label: "Experience", href: "/experience" },
+        { label: "Skills", href: "/skills" },
+        { label: "Achievements", href: "/achievements" },
+        { label: "Contact", href: "/contact" },
     ];
 
     return (
@@ -55,12 +61,12 @@ export default function Footer({ profile }: FooterProps) {
                         <ul className="space-y-2.5">
                             {navLinks.map(({ label, href }) => (
                                 <li key={label}>
-                                    <a
+                                    <Link
                                         href={href}
                                         className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                                     >
                                         {label}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
@@ -96,7 +102,7 @@ export default function Footer({ profile }: FooterProps) {
                         <span style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}>
                             {profile?.name || "Neshun R"}
                         </span>
-                        . Crafted with React &amp; TypeScript.
+                        . Crafted with Next.js &amp; TypeScript.
                     </p>
                     <button
                         onClick={scrollToTop}

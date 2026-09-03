@@ -1,5 +1,6 @@
 import { fetchGitHubData, ProcessedProject, ProcessedSkill, GitHubStats } from './github-service';
 import { env } from './env';
+import { isCuratedProject } from '@/data/project-config';
 
 // Cache for GitHub data
 let cachedData: {
@@ -35,6 +36,8 @@ async function ensureGitHubData() {
           publicRepos: 0,
           followers: 0,
           following: 0,
+          totalStars: 0,
+          totalForks: 0,
           lastUpdated: new Date(),
         },
       };
@@ -61,7 +64,10 @@ export const portfolioAPI = {
     await ensureGitHubData();
     await delay(100);
 
-    let filtered = [...(cachedData?.projects || [])];
+    // Only curated portfolio projects are shown on the site
+    let filtered = [...(cachedData?.projects || [])].filter((p) =>
+      isCuratedProject(p.name),
+    );
 
     if (params?.category && params.category !== 'all') {
       filtered = filtered.filter(p => p.category === params.category);
@@ -80,7 +86,9 @@ export const portfolioAPI = {
     await ensureGitHubData();
     await delay(100);
 
-    const categories = new Set((cachedData?.projects || []).map(p => p.category));
+    const categories = new Set(
+      (cachedData?.projects || []).filter((p) => isCuratedProject(p.name)).map((p) => p.category),
+    );
     return { data: Array.from(categories).sort() };
   },
 
@@ -120,9 +128,9 @@ export const portfolioAPI = {
         {
           _id: 'ach1',
           userId: 'github',
-          title: 'Projects Completed',
-          value: `${cachedData?.projects.length || 0}+`,
-          description: 'Successfully completed various projects',
+          title: 'Public Repositories',
+          value: `${cachedData?.stats.publicRepos || cachedData?.projects.length || 0}`,
+          description: 'Live count from GitHub profile',
           icon: '🚀',
           order: 1,
         },
