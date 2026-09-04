@@ -68,7 +68,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.15 }}
-              className="font-ui inline-flex items-center gap-2 mb-8 px-3 py-1.5 border border-border/50 bg-card/40 rounded-full text-xs text-muted-foreground backdrop-blur-sm"
+              className="font-ui inline-flex items-center gap-2 mb-8 px-3 py-1.5 border border-border/50 bg-card/80 max-md:bg-card rounded-full text-xs text-muted-foreground lg:backdrop-blur-sm"
             >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute h-full w-full rounded-full bg-chart-3 opacity-60" />
@@ -206,7 +206,7 @@ export default function Hero({ profile, githubStats }: HeroProps) {
             <motion.div
               key={label}
               whileHover={{ y: -3 }}
-              className="bg-card/60 border border-border/60 rounded-xl p-4 text-center hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
+              className="bg-card border border-border/60 rounded-xl p-4 text-center hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
             >
               <CountUp
                 to={value}

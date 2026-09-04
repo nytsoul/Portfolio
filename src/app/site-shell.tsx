@@ -67,9 +67,9 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           />
           <motion.main
-            initial={coarse ? { opacity: 0, y: 16 } : { opacity: 0, y: 24, filter: "blur(6px)" }}
-            animate={coarse ? { opacity: 1, y: 0 } : { opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={coarse ? { opacity: 0, y: -8 } : { opacity: 0, y: -12, filter: "blur(4px)" }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
             transition={{ duration: coarse ? 0.35 : 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="pt-[80px]"
           >

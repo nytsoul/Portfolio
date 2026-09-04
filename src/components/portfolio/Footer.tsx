@@ -33,17 +33,17 @@ export default function Footer({ profile }: FooterProps) {
     ];
 
     return (
-        <footer className="relative w-full overflow-hidden">
-            {/* Glass shell — solid on touch, no backdrop smear */}
-            <div className="footer-glass absolute inset-0 bg-card/40 backdrop-blur-2xl border-t border-white/10" aria-hidden />
-            {/* Floating orbs */}
+        <footer className="relative w-full overflow-hidden bg-card">
+            {/* Glass shell — light blur on desktop, solid on small screens (no backdrop smear) */}
+            <div className="footer-glass absolute inset-0 bg-card/70 backdrop-blur-md max-md:bg-card max-md:backdrop-blur-none border-t border-white/10" aria-hidden />
+            {/* Floating orbs — desktop only, they smear under backdrop-blur on mobile GPUs */}
             <div
-                className="absolute -top-24 left-1/4 w-96 h-96 rounded-full pointer-events-none animate-[orb-float_14s_ease-in-out_infinite_alternate]"
+                className="absolute -top-24 left-1/4 w-96 h-96 rounded-full pointer-events-none animate-[orb-float_14s_ease-in-out_infinite_alternate] hidden md:block"
                 style={{ background: "radial-gradient(circle, oklch(0.78 0.12 75 / 0.10) 0%, transparent 65%)" }}
                 aria-hidden
             />
             <div
-                className="absolute -bottom-32 right-1/5 w-[28rem] h-[28rem] rounded-full pointer-events-none animate-[orb-float_18s_ease-in-out_infinite_alternate-reverse]"
+                className="absolute -bottom-32 right-1/5 w-[28rem] h-[28rem] rounded-full pointer-events-none animate-[orb-float_18s_ease-in-out_infinite_alternate-reverse] hidden md:block"
                 style={{ background: "radial-gradient(circle, oklch(0.72 0.10 200 / 0.07) 0%, transparent 65%)" }}
                 aria-hidden
             />

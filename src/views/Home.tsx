@@ -40,9 +40,9 @@ export default function Home() {
       {/* Hero with 3D */}
       <section className="relative overflow-hidden">
         <Suspense fallback={null}>
-          <HeroScene className="absolute inset-y-0 right-0 w-full lg:w-[55%] h-[420px] lg:h-full opacity-90" />
+          <HeroScene className="absolute inset-x-0 top-0 h-[300px] sm:h-[360px] lg:inset-y-0 lg:left-auto lg:right-0 lg:w-[55%] lg:h-full opacity-40 sm:opacity-50 lg:opacity-90 [mask-image:linear-gradient(to_bottom,black_55%,transparent_100%)] lg:[mask-image:none]" />
         </Suspense>
-        <div className="relative">
+        <div className="relative z-10">
           <Hero profile={profile} githubStats={githubStats} />
         </div>
       </section>
@@ -63,7 +63,7 @@ export default function Home() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {numbers.map(({ value, suffix, label }, i) => (
             <Reveal key={label} delay={i * 0.08}>
-              <div className="group bg-card/40 border border-border/50 rounded-xl p-6 text-center hover:border-primary/40 hover:bg-card/70 transition-all">
+              <div className="group bg-card border border-border/50 rounded-xl p-6 text-center hover:border-primary/40 transition-all">
                 <CountUp
                   to={value}
                   suffix={suffix}
@@ -103,7 +103,7 @@ export default function Home() {
                   whileHover={{ y: -6 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="group h-full bg-card/50 border border-border/55 rounded-xl overflow-hidden hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 transition-all"
+                  className="group h-full bg-card border border-border/55 rounded-xl overflow-hidden hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 transition-all"
                 >
                   <div className="relative aspect-[16/9] overflow-hidden bg-background/60">
                     <img
@@ -185,7 +185,7 @@ export default function Home() {
               <Reveal key={e.title} delay={i * 0.1}>
                 <Link
                   href="/about"
-                  className="group block h-full p-6 bg-card/40 border border-border/50 rounded-xl hover:bg-card/70 hover:border-primary/35 transition-all"
+                  className="group block h-full p-6 bg-card border border-border/50 rounded-xl hover:border-primary/35 transition-all"
                 >
                   <div className="font-mono text-xs text-primary/70 mb-3">0{i + 1}</div>
                   <h3 className="text-lg font-bold text-foreground mb-2" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
