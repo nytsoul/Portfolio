@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -22,11 +22,11 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   const { data: dbProfile } = useProfile();
   const { data: dbGithubStats } = useGitHubStats();
   const profile = useFallbackProfile(dbProfile);
-  // Touch GPUs smear filter-blur transitions — use fade/slide only there
-  const [coarse, setCoarse] = useState(false);
-  useEffect(() => {
-    setCoarse(window.matchMedia("(pointer: coarse)").matches);
-  }, []);
+  // Touch GPUs smear filter-blur transitions — use fade/slide only there.
+  // Decided synchronously so animation targets never swap mid-flight.
+  const [coarse] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
+  );
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-clip">

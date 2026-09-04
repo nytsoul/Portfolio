@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Briefcase,
@@ -149,11 +149,11 @@ const itemVariants = {
 };
 
 export default function ExperienceTimeline() {
-  const [coarse, setCoarse] = useState(false);
-
-  useEffect(() => {
-    setCoarse(window.matchMedia("(pointer: coarse)").matches);
-  }, []);
+  // Synchronous first-render decision — swapping variants mid-flight
+  // freezes half-finished transforms on mobile.
+  const [coarse] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
+  );
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="relative flex justify-center">

@@ -1,8 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+
+function isCoarsePointer() {
+  return typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
+}
 
 interface RevealProps {
   children: ReactNode;
@@ -17,11 +21,9 @@ interface RevealProps {
  * On touch devices the blur is skipped (GPU-friendly) with a shorter rise.
  */
 export default function Reveal({ children, delay = 0, y = 28, className, once = true }: RevealProps) {
-  const [coarse, setCoarse] = useState(false);
-
-  useEffect(() => {
-    setCoarse(window.matchMedia("(pointer: coarse)").matches);
-  }, []);
+  // Decided synchronously on first render — never swapped mid-flight,
+  // otherwise framer-motion can freeze a half-finished blur in place.
+  const [coarse] = useState(isCoarsePointer);
 
   const rise = coarse ? Math.min(y, 18) : y;
 
