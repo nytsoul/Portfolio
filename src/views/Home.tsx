@@ -105,7 +105,7 @@ export default function Home() {
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   className="group h-full bg-card/50 border border-border/55 rounded-xl overflow-hidden hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 transition-all"
                 >
-                  <div className="relative aspect-[16/10] overflow-hidden bg-background/60">
+                  <div className="relative aspect-[21/9] md:aspect-[16/10] overflow-hidden bg-background/60">
                     <img
                       src={p.image || "/images/project-web.png"}
                       alt={`${p.name} preview`}
@@ -124,10 +124,10 @@ export default function Home() {
                       </span>
                     )}
                   </div>
-                  <div className="p-6">
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <h3
-                        className="text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-snug"
+              <div className="p-4 md:p-6">
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <h3
+                        className="text-lg md:text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-snug"
                         style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                       >
                         {p.name}

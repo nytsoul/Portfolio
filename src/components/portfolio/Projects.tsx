@@ -98,7 +98,7 @@ export default function Projects() {
       </motion.div>
 
       {/* ── Grid ── */}
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
         <AnimatePresence mode="popLayout">
         {filteredProjects?.map((project: any, index: number) => (
           <motion.article
@@ -113,7 +113,7 @@ export default function Projects() {
             className="group flex flex-col bg-card/50 border border-border/55 rounded-xl overflow-hidden hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 active:border-primary/50 transition-all duration-300"
           >
             {/* Preview — live deployment screenshot */}
-            <div className="relative aspect-[16/10] overflow-hidden bg-background/60 border-b border-border/40">
+            <div className="relative aspect-[21/9] md:aspect-[16/10] overflow-hidden bg-background/60 border-b border-border/40">
               <img
                 src={project.image || "/images/project-web.png"}
                 alt={`${project.name} preview`}
@@ -133,12 +133,12 @@ export default function Projects() {
               )}
             </div>
             {/* Body */}
-            <div className="p-5 flex-1">
+            <div className="p-4 md:p-5 flex-1">
               {/* Header row */}
               <div className="flex items-start justify-between gap-2 mb-3">
                 <div>
                   <h3
-                    className="text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-snug"
+                    className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-snug"
                     style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                   >
                     {project.name}
@@ -157,7 +157,7 @@ export default function Projects() {
               </div>
 
               {/* Description */}
-              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-4">
+              <p className="text-[13px] md:text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-3 md:mb-4">
                 {project.description || "No description available."}
               </p>
 
@@ -175,7 +175,7 @@ export default function Projects() {
             </div>
 
             {/* Footer */}
-            <div className="font-ui flex items-center gap-4 px-5 py-3.5 border-t border-border/40 bg-card/30">
+            <div className="font-ui flex items-center gap-4 px-4 py-3 md:px-5 md:py-3.5 border-t border-border/40 bg-card/30">
               <a
                 href={project.url}
                 target="_blank"
