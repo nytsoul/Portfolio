@@ -46,29 +46,30 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
       <Navigation />
 
       <AnimatePresence mode="wait">
-        {/* Gold veil sweep on every route change */}
-        <motion.div
-          key={`wipe-${pathname}`}
-          className="fixed inset-0 z-[60] pointer-events-none"
-          style={{
-            background:
-              "linear-gradient(120deg, oklch(0.78 0.12 75 / 0.16) 0%, oklch(0.07 0.005 260 / 0.92) 45%)",
-          }}
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        />
-        <motion.main
-          key={pathname}
-          initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -12, filter: "blur(4px)" }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="pt-[58px]"
-        >
-          {children}
-        </motion.main>
+        {/* Wrap in a single element to satisfy mode="wait" which requires only one child */}
+        <motion.div key={pathname} className="w-full flex-1">
+          {/* Gold veil sweep on every route change */}
+          <motion.div
+            className="fixed inset-0 z-[60] pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(120deg, oklch(0.78 0.12 75 / 0.16) 0%, oklch(0.07 0.005 260 / 0.92) 45%)",
+            }}
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <motion.main
+            initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -12, filter: "blur(4px)" }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="pt-[58px]"
+          >
+            {children}
+          </motion.main>
+        </motion.div>
       </AnimatePresence>
 
       <Footer profile={profile} />
