@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Github, Linkedin, Mail, MapPin, ArrowUp, ArrowUpRight, Code2, Zap } from "lucide-react";
+import { Github, Linkedin, Mail, MapPin, ArrowUp, ArrowUpRight, Code2, Zap, Instagram, Phone } from "lucide-react";
 import Magnetic from "@/components/motion/Magnetic";
 import Reveal from "@/components/motion/Reveal";
 import { env } from "@/lib/env";
@@ -20,6 +20,8 @@ export default function Footer({ profile }: FooterProps) {
         { icon: Github, href: `https://github.com/${profile?.github || "nytsoul"}`, label: "GitHub", value: profile?.github || "nytsoul" },
         { icon: Linkedin, href: profile?.linkedin || "", label: "LinkedIn", value: "Connect" },
         { icon: Mail, href: `mailto:${profile?.email || "neshun7413@gmail.com"}`, label: "Email", value: "Say hello" },
+        { icon: Phone, href: `tel:${profile?.phone || env.portfolio.phone}`, label: "Phone", value: profile?.phoneDisplay || env.portfolio.phoneDisplay },
+        { icon: Instagram, href: profile?.instagram || env.portfolio.instagram, label: "Instagram", value: "@nytsoul" },
         { icon: Zap, href: `https://codeforces.com/profile/${cfUser}`, label: "Codeforces", value: cfUser },
         { icon: Code2, href: `https://leetcode.com/${lcUser}`, label: "LeetCode", value: lcUser },
     ].filter((l) => l.href);
@@ -137,7 +139,7 @@ export default function Footer({ profile }: FooterProps) {
                                 <motion.a
                                     key={label}
                                     href={href}
-                                    target={href.startsWith("mailto") ? undefined : "_blank"}
+                                    target={href.startsWith("mailto:") || href.startsWith("tel:") ? undefined : "_blank"}
                                     rel="noopener noreferrer"
                                     initial={{ opacity: 0, x: -10 }}
                                     whileInView={{ opacity: 1, x: 0 }}

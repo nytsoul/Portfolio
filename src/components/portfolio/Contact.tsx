@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Github, Linkedin, Instagram, Code, Code2, ExternalLink, ArrowUpRight, MapPin } from "lucide-react";
+import { Mail, Github, Linkedin, Instagram, Phone, Code, Code2, ExternalLink, ArrowUpRight, MapPin } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 import Magnetic from "@/components/motion/Magnetic";
 import { env } from "@/lib/env";
@@ -22,6 +22,13 @@ export default function Contact({ profile }: ContactProps) {
       note: "Best for project inquiries",
     },
     {
+      icon: Phone,
+      label: "Phone",
+      value: profile?.phoneDisplay || "+91 97916 13205",
+      href: `tel:${profile?.phone || "+919791613205"}`,
+      note: "Call or WhatsApp",
+    },
+    {
       icon: Github,
       label: "GitHub",
       value: `github.com/${profile?.github || "nytsoul"}`,
@@ -38,8 +45,8 @@ export default function Contact({ profile }: ContactProps) {
     {
       icon: Instagram,
       label: "Instagram",
-      value: "@nyt__soul",
-      href: profile?.instagram || "https://instagram.com/nyt__soul",
+      value: "@nytsoul",
+      href: profile?.instagram || "https://instagram.com/nytsoul",
       note: "Personal updates",
     },
     {
@@ -87,7 +94,7 @@ export default function Contact({ profile }: ContactProps) {
               <motion.a
                 key={i}
                 href={m.href}
-                target={m.href.startsWith("mailto") ? undefined : "_blank"}
+                target={m.href.startsWith("mailto:") || m.href.startsWith("tel:") ? undefined : "_blank"}
                 rel="noopener noreferrer"
                 initial={{ opacity: 0, x: -10 }}
                 animate={inView ? { opacity: 1, x: 0 } : {}}

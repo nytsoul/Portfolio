@@ -218,8 +218,8 @@ export const SOCIAL_LINKS = [
   },
   {
     label: "Instagram",
-    href: "https://instagram.com/nyt__soul",
-    username: "@nyt__soul",
+    href: "https://instagram.com/nytsoul",
+    username: "@nytsoul",
   },
   {
     label: "Codeforces",
