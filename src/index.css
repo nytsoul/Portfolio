@@ -6,7 +6,9 @@
 
 /* DO NOT CHANGE */
 @import "tailwindcss";
-@import "tw-animate-css";
+/* Vendored locally: tw-animate-css's export map only exposes the non-standard
+   "style" condition, which Vercel's resolver can't see. Relative import = bulletproof. */
+@import "./vendor/tw-animate.css";
 @custom-variant dark (&:is(.dark *));
 
 /* DO NOT CHANGE */
