@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Github, Linkedin, Mail, MapPin, ArrowUp, ArrowUpRight, Code2, Zap, Instagram, Phone } from "lucide-react";
+import { Github, Linkedin, Mail, MapPin, ArrowUp, ArrowUpRight, Instagram, Phone } from "lucide-react";
 import Magnetic from "@/components/motion/Magnetic";
 import Reveal from "@/components/motion/Reveal";
 import { env } from "@/lib/env";
@@ -13,17 +13,13 @@ interface FooterProps {
 
 export default function Footer({ profile }: FooterProps) {
     const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-    const cfUser = env.competitive.codeforces.username || "nyt__soul";
-    const lcUser = env.competitive.leetcode.username || "nyt__soul";
 
     const socialLinks = [
         { icon: Github, href: `https://github.com/${profile?.github || "nytsoul"}`, label: "GitHub", value: profile?.github || "nytsoul" },
-        { icon: Linkedin, href: profile?.linkedin || "", label: "LinkedIn", value: "Connect" },
+        { icon: Linkedin, href: profile?.linkedin || env.portfolio.linkedin, label: "LinkedIn", value: "neshun-r" },
         { icon: Mail, href: `mailto:${profile?.email || "neshun7413@gmail.com"}`, label: "Email", value: "Say hello" },
         { icon: Phone, href: `tel:${profile?.phone || env.portfolio.phone}`, label: "Phone", value: profile?.phoneDisplay || env.portfolio.phoneDisplay },
         { icon: Instagram, href: profile?.instagram || env.portfolio.instagram, label: "Instagram", value: "@nytsoul" },
-        { icon: Zap, href: `https://codeforces.com/profile/${cfUser}`, label: "Codeforces", value: cfUser },
-        { icon: Code2, href: `https://leetcode.com/${lcUser}`, label: "LeetCode", value: lcUser },
     ].filter((l) => l.href);
 
     const navLinks = [
@@ -38,8 +34,8 @@ export default function Footer({ profile }: FooterProps) {
 
     return (
         <footer className="relative w-full overflow-hidden">
-            {/* Glass shell */}
-            <div className="absolute inset-0 bg-card/40 backdrop-blur-2xl border-t border-white/10" aria-hidden />
+            {/* Glass shell — solid on touch, no backdrop smear */}
+            <div className="footer-glass absolute inset-0 bg-card/40 backdrop-blur-2xl border-t border-white/10" aria-hidden />
             {/* Floating orbs */}
             <div
                 className="absolute -top-24 left-1/4 w-96 h-96 rounded-full pointer-events-none animate-[orb-float_14s_ease-in-out_infinite_alternate]"

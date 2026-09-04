@@ -377,4 +377,10 @@
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
   }
+  /* Footer glass goes fully solid on touch — zero blur cost, zero smear */
+  footer .footer-glass {
+    background-color: oklch(0.10 0.008 260);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }

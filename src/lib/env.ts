@@ -46,7 +46,7 @@ export const env = {
     phoneDisplay: str("NEXT_PUBLIC_PHONE_DISPLAY", "+91 97916 13205"),
     instagram: str("NEXT_PUBLIC_INSTAGRAM_URL", "https://instagram.com/nytsoul"),
     website: strOpt("NEXT_PUBLIC_PORTFOLIO_WEBSITE"),
-    linkedin: strOpt("NEXT_PUBLIC_PORTFOLIO_LINKEDIN"),
+    linkedin: str("NEXT_PUBLIC_PORTFOLIO_LINKEDIN", "https://linkedin.com/in/neshun-r-309b1b37b"),
     github: str("NEXT_PUBLIC_PORTFOLIO_GITHUB", "nytsoul"),
     tagline: str(
       "NEXT_PUBLIC_PORTFOLIO_TAGLINE",
