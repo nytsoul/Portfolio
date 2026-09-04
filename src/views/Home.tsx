@@ -101,6 +101,7 @@ export default function Home() {
               <Reveal key={p._id ?? i} delay={i * 0.1}>
                 <motion.article
                   whileHover={{ y: -6 }}
+                  whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   className="group h-full bg-card/50 border border-border/55 rounded-xl overflow-hidden hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 transition-all"
                 >

@@ -36,12 +36,12 @@ export default function CompetitiveProgramming() {
     },
     {
       title: "CodeForces",
-      value: codeforcesUsername || "nytsoul",
+      value: codeforcesUsername || "nyt__soul",
       description: "Competitive Programming",
       icon: Zap,
       color: "text-chart-3",
       bgColor: "bg-chart-3/10",
-      href: `https://codeforces.com/profile/${codeforcesUsername || "nytsoul"}`,
+      href: `https://codeforces.com/profile/${codeforcesUsername || "nyt__soul"}`,
     },
     {
       title: "LeetCode",

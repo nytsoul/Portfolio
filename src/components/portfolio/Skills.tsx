@@ -15,13 +15,6 @@ function levelLabel(s: number) {
   return "Familiar";
 }
 
-function levelColor(s: number) {
-  if (s >= 90) return "text-chart-1 border-chart-1/30 bg-chart-1/10";
-  if (s >= 80) return "text-chart-3 border-chart-3/30 bg-chart-3/10";
-  if (s >= 70) return "text-chart-2 border-chart-2/30 bg-chart-2/10";
-  return "text-muted-foreground border-border/60 bg-muted/30";
-}
-
 const TABS = ["All", ...SKILL_CATEGORIES] as const;
 
 export default function Skills() {
@@ -43,8 +36,8 @@ export default function Skills() {
     );
   }, [tab, query]);
 
-  const avg = Math.round(LOCAL_SKILLS.reduce((a, s) => a + s.strength, 0) / LOCAL_SKILLS.length);
   const top = LOCAL_SKILLS.reduce((a, b) => (b.strength > a.strength ? b : a));
+  const expertCount = LOCAL_SKILLS.filter((s) => s.strength >= 90).length;
 
   return (
     <div className="w-full px-6 lg:px-16">
@@ -126,54 +119,29 @@ export default function Skills() {
         </div>
       </motion.div>
 
-      {/* ── Icon card grid ── */}
-      <motion.div layout className="grid sm:grid-cols-2 xl:grid-cols-3 gap-3.5">
+      {/* ── Square tile grid — every tool, same size ── */}
+      <motion.div layout className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
         <AnimatePresence mode="popLayout">
           {visible.map((s) => (
             <motion.div
               layout
               key={s.id}
-              initial={{ opacity: 0, scale: 0.92 }}
+              title={`${s.name} — ${levelLabel(s.strength)} · ${s.category}`}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.92 }}
+              exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.25 }}
               whileHover={{ y: -4 }}
-              className="group p-5 rounded-xl border border-border/55 bg-card/50 hover:border-primary/40 hover:bg-card/75 hover:shadow-lg hover:shadow-primary/5 transition-colors"
+              whileTap={{ scale: 0.95 }}
+              className="group aspect-square p-3 rounded-xl border border-border/55 bg-card/50 hover:border-primary/40 hover:bg-card/75 hover:shadow-lg hover:shadow-primary/5 transition-colors flex flex-col items-center justify-center gap-1.5 text-center"
             >
-              <div className="flex items-start gap-3.5">
-                <TechIcon
-                  skillId={s.id}
-                  skillName={s.name}
-                  className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform duration-200"
-                  imgClassName="w-7 h-7"
-                />
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <h4 className="text-[15px] font-semibold text-foreground truncate">{s.name}</h4>
-                    <span className="font-mono text-xs text-primary shrink-0">{s.strength}%</span>
-                  </div>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="font-ui text-[11px] text-muted-foreground">{s.category}</span>
-                    <span
-                      className={cn(
-                        "text-[9px] font-semibold tracking-wide uppercase px-1.5 py-px rounded border",
-                        levelColor(s.strength),
-                      )}
-                    >
-                      {levelLabel(s.strength)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-4 h-1.5 rounded-full bg-white/5 overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${s.strength}%` }}
-                  viewport={{ once: true, amount: 0.5 }}
-                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                  className="h-full rounded-full bg-gradient-to-r from-primary/90 via-primary to-chart-2/80"
-                />
-              </div>
+              <TechIcon
+                skillId={s.id}
+                skillName={s.name}
+                className="w-11 h-11 shrink-0 group-hover:scale-110 transition-transform duration-200"
+                imgClassName="w-6 h-6"
+              />
+              <h4 className="text-xs font-semibold text-foreground truncate w-full leading-tight">{s.name}</h4>
             </motion.div>
           ))}
         </AnimatePresence>
@@ -204,8 +172,8 @@ export default function Skills() {
       >
         {[
           { value: String(LOCAL_SKILLS.length), label: "Technologies" },
-          { value: `${avg}%`, label: "Avg. Proficiency" },
-          { value: `${top.name} ${top.strength}%`, label: "Strongest" },
+          { value: String(expertCount), label: "Expert-Level" },
+          { value: top.name, label: "Strongest" },
           { value: String(SKILL_CATEGORIES.length), label: "Domains" },
         ].map(({ value, label }) => (
           <div key={label} className="flex flex-col items-center justify-center py-7 gap-1.5 bg-card/60 px-2">

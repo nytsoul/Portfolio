@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Briefcase, Code, Trophy, GraduationCap, ArrowUpRight } from "lucide-react";
 import GitHubStats from "./GitHubStats";
 import CompetitiveProgramming from "./CompetitiveProgramming";
+import Streaks from "./Streaks";
 import ExperienceTimeline from "./ExperienceTimeline";
 import Reveal from "@/components/motion/Reveal";
 import SectionHeading from "@/components/motion/SectionHeading";
@@ -163,8 +164,12 @@ export default function About() {
         <SectionHeading
           label="Competitive Programming"
           title={<>Trained on <span className="italic gradient-text">hard problems.</span></>}
+          sub="Live streaks pulled from GitHub, Codeforces, and LeetCode — they move when I do."
         />
-        <CompetitiveProgramming />
+        <Streaks />
+        <div className="mt-4">
+          <CompetitiveProgramming />
+        </div>
       </div>
 
       {/* ── GitHub Stats ── */}

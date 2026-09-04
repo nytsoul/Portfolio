@@ -109,7 +109,8 @@ export default function Projects() {
             exit={{ opacity: 0, scale: 0.94 }}
             transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
             whileHover={{ y: -6 }}
-            className="group flex flex-col bg-card/50 border border-border/55 rounded-xl overflow-hidden hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300"
+            whileTap={{ scale: 0.98 }}
+            className="group flex flex-col bg-card/50 border border-border/55 rounded-xl overflow-hidden hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 active:border-primary/50 transition-all duration-300"
           >
             {/* Preview — live deployment screenshot */}
             <div className="relative aspect-[16/10] overflow-hidden bg-background/60 border-b border-border/40">

@@ -68,7 +68,7 @@ export const env = {
   // Competitive Programming
   competitive: {
     codeforces: {
-      username: strOpt("NEXT_PUBLIC_CODEFORCES_USERNAME"),
+      username: str("NEXT_PUBLIC_CODEFORCES_USERNAME", "nyt__soul"),
       problemsSolved: num("NEXT_PUBLIC_CODEFORCES_PROBLEMS_SOLVED", 50),
     },
     leetcode: {

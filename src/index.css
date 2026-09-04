@@ -1,6 +1,6 @@
 /* ───────────────────────────────────────────────────────────────────────
    NESHUN R — Portfolio Design System
-   Fonts: Syne (display) · Inter (UI/body) · JetBrains Mono (code)
+   Fonts: Clash Display · Satoshi (UI/body) · Playfair italic (accents) · JetBrains Mono (code)
    Palette: near-black, off-white, warm gold accent
    ─────────────────────────────────────────────────────────────────────── */
 
@@ -137,7 +137,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "Satoshi", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 16px;
     line-height: 1.7;
     font-weight: 400;
@@ -147,17 +147,17 @@
     overflow-x: hidden;
   }
 
-  /* Syne for all display / headings — futuristic, technical */
+  /* Clash Display for all headings — premium, confident, tight */
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Syne", "Inter", sans-serif;
-    font-weight: 700;
-    letter-spacing: -0.03em;
+    font-family: "Clash Display", "Satoshi", "Inter", sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
     line-height: 1.05;
   }
 
-  /* UI components remain Inter for clarity */
+  /* UI components remain Satoshi for clarity */
   button, input, select, textarea, label, .font-ui {
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "Satoshi", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
 
   button:not([disabled]),
@@ -202,7 +202,7 @@
 /* ── Responsive Typography Tokens ──────────────────────────────────────── */
 @layer utilities {
   .text-display-xl {
-    font-family: "Syne", sans-serif;
+    font-family: "Clash Display", "Satoshi", sans-serif;
     font-size: clamp(3rem, 8vw, 8rem);
     font-weight: 800;
     line-height: 0.95;
@@ -210,7 +210,7 @@
   }
 
   .text-display-lg {
-    font-family: "Syne", sans-serif;
+    font-family: "Clash Display", "Satoshi", sans-serif;
     font-size: clamp(2.25rem, 5vw, 5rem);
     font-weight: 700;
     line-height: 1.0;
@@ -218,7 +218,7 @@
   }
 
   .text-display-md {
-    font-family: "Syne", sans-serif;
+    font-family: "Clash Display", "Satoshi", sans-serif;
     font-size: clamp(1.75rem, 3.5vw, 3.5rem);
     font-weight: 700;
     line-height: 1.05;
@@ -226,7 +226,7 @@
   }
 
   .text-display-sm {
-    font-family: "Syne", sans-serif;
+    font-family: "Clash Display", "Satoshi", sans-serif;
     font-size: clamp(1.25rem, 2.5vw, 2rem);
     font-weight: 600;
     line-height: 1.1;
@@ -235,7 +235,7 @@
 
   /* Section label — small caps tracking */
   .section-label {
-    font-family: "Inter", sans-serif;
+    font-family: "Satoshi", "Inter", sans-serif;
     @apply text-[11px] font-semibold tracking-[0.2em] uppercase text-muted-foreground/60;
   }
 

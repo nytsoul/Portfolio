@@ -106,24 +106,30 @@ export default function Navigation() {
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
           className="fixed top-[58px] left-0 right-0 z-40 glass-strong border-b border-border/50 md:hidden"
         >
           <div className="w-full px-6 py-4 space-y-0.5 font-ui">
-            {NAV_ITEMS.map((item) => {
+            {NAV_ITEMS.map((item, i) => {
               const isActive = pathname === item.href;
               return (
-                <button
+                <motion.button
                   key={item.name}
+                  initial={{ opacity: 0, x: -14 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.05 + i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                  whileTap={{ scale: 0.97, x: 2 }}
                   onClick={() => go(item.href)}
                   className={`w-full text-left px-3 py-2.5 text-[13px] font-medium rounded-md transition-colors flex items-center gap-3 ${
                     isActive
                       ? "text-primary bg-primary/8"
-                      : "text-muted-foreground hover:text-foreground hover:bg-accent/40"
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent/40 active:bg-accent/60"
                   }`}
                 >
                   <span className="text-[10px] font-mono opacity-50">{item.number}</span>
                   {item.name}
-                </button>
+                </motion.button>
               );
             })}
           </div>

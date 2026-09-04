@@ -45,8 +45,8 @@ export default function Contact({ profile }: ContactProps) {
     {
       icon: Code,
       label: "Codeforces",
-      value: env.competitive.codeforces.username || "nytsoul",
-      href: `https://codeforces.com/profile/${env.competitive.codeforces.username || "nytsoul"}`,
+      value: env.competitive.codeforces.username || "nyt__soul",
+      href: `https://codeforces.com/profile/${env.competitive.codeforces.username || "nyt__soul"}`,
       note: "Competitive programming",
     },
     {

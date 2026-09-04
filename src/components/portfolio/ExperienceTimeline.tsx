@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Briefcase,
@@ -136,22 +137,31 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: (offset: number) => ({ opacity: 0, x: offset }),
+  // Touch devices: vertical-only entrance (no horizontal overflow, no jank)
+  hidden: ({ offset, coarse }: { offset: number; coarse: boolean }) =>
+    coarse ? { opacity: 0, y: 26 } : { opacity: 0, x: offset },
   visible: {
     opacity: 1,
     x: 0,
-    transition: { type: "spring" as const, stiffness: 90, damping: 14 },
+    y: 0,
+    transition: { type: "spring" as const, stiffness: 90, damping: 16 },
   },
 };
 
 export default function ExperienceTimeline() {
+  const [coarse, setCoarse] = useState(false);
+
+  useEffect(() => {
+    setCoarse(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="relative flex justify-center">
       <div className="relative w-full max-w-4xl">
-        {/* Center line — left on mobile, center on md+ */}
-        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-primary/60 to-primary/20" />
+        {/* Rail — slim left rail on mobile, center on md+ */}
+        <div className="absolute left-[19px] md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-primary/60 to-primary/20" />
 
-        <div className="space-y-10 md:space-y-14">
+        <div className="space-y-7 md:space-y-14">
           {ENTRIES.map((entry, idx) => {
             const Icon = entry.icon;
             const style = TYPE_STYLES[entry.type];
@@ -160,29 +170,29 @@ export default function ExperienceTimeline() {
               <motion.div
                 key={`${entry.period}-${entry.title}`}
                 variants={itemVariants}
-                custom={offset}
+                custom={{ offset, coarse }}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }}
+                viewport={{ once: true, amount: 0.15 }}
                 className={`relative flex items-center ${
                   idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
                 } flex-col`}
               >
-                {/* Icon node on the line */}
+                {/* Icon node on the rail */}
                 <div
-                  className={`absolute left-4 md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-gradient-to-br ${style.dot} flex items-center justify-center text-white ring-4 ring-background z-10 shadow-lg`}
+                  className={`absolute left-[19px] md:left-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-gradient-to-br ${style.dot} flex items-center justify-center text-white ring-4 ring-background z-10 shadow-lg`}
                 >
                   <Icon className="w-4 h-4" />
                 </div>
 
                 {/* Card */}
                 <div
-                  className={`w-full md:w-1/2 ml-12 md:ml-0 ${
+                  className={`w-full md:w-1/2 ml-11 md:ml-0 ${
                     idx % 2 === 0 ? "md:mr-auto md:pr-10" : "md:ml-auto md:pl-10"
                   }`}
                 >
                   <div
-                    className={`bg-card/50 border border-border/60 border-l-2 ${style.border} p-5 rounded-xl shadow-md hover:shadow-primary/10 hover:border-primary/25 transition-all`}
+                    className={`bg-card/50 border border-border/60 border-l-2 ${style.border} p-4 md:p-5 rounded-xl shadow-md hover:shadow-primary/10 hover:border-primary/25 active:border-primary/40 transition-all`}
                   >
                     <div className="flex items-center gap-2 flex-wrap mb-2">
                       <span className="text-sm font-semibold text-primary">{entry.period}</span>
@@ -193,7 +203,7 @@ export default function ExperienceTimeline() {
                       </span>
                     </div>
                     <h3
-                      className="text-lg font-bold text-foreground leading-snug mb-1"
+                      className="text-[17px] md:text-lg font-bold text-foreground leading-snug mb-1"
                       style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                     >
                       {entry.title}
@@ -214,7 +224,7 @@ export default function ExperienceTimeline() {
                     )}
                     <ul className="space-y-1.5 mb-3">
                       {entry.description.map((d, i) => (
-                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2 leading-relaxed">
+                        <li key={i} className="text-[13px] md:text-sm text-muted-foreground flex items-start gap-1.5 md:gap-2 leading-relaxed">
                           <span className="text-primary mt-0.5 shrink-0">▸</span>
                           <span>{d}</span>
                         </li>

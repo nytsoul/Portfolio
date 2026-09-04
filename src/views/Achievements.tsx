@@ -31,6 +31,7 @@ export default function Achievements() {
           <Reveal className="md:col-span-2" delay={0}>
             <motion.div
               whileHover={{ y: -4 }}
+              whileTap={{ scale: 0.98 }}
               className="relative overflow-hidden h-full p-8 lg:p-10 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/15 via-card/60 to-card/30"
             >
               <div
@@ -55,7 +56,8 @@ export default function Achievements() {
             <Reveal key={a.id} delay={0.08 * (i + 1)}>
               <motion.div
                 whileHover={{ y: -4 }}
-                className="h-full p-6 bg-card/50 border border-border/55 rounded-2xl hover:border-primary/35 transition-all"
+                whileTap={{ scale: 0.97 }}
+                className="h-full p-6 bg-card/50 border border-border/55 rounded-2xl hover:border-primary/35 active:border-primary/50 transition-all"
               >
                 <Trophy className="w-4 h-4 text-chart-1 mb-3" />
                 <div className="text-3xl font-bold text-foreground mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
@@ -94,7 +96,7 @@ export default function Achievements() {
           const suffix = String(d.value).replace(/[0-9]/g, "");
           return (
             <Reveal key={d._id} delay={i * 0.07}>
-              <div className="bg-card/50 border border-border/55 rounded-xl p-6 text-center hover:border-primary/35 hover:-translate-y-1 transition-all h-full">
+              <div className="bg-card/50 border border-border/55 rounded-xl p-6 text-center hover:border-primary/35 hover:-translate-y-1 active:scale-[0.98] transition-all h-full">
                 <div className="text-2xl mb-2">{d.icon}</div>
                 <div className="text-2xl font-bold text-foreground">
                   {Number.isNaN(n) ? d.value : <CountUp to={n} suffix={suffix} />}
