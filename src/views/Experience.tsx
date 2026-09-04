@@ -26,12 +26,7 @@ export default function Experience() {
         <Suspense fallback={null}>
           <SectionScene variant="violet" className="absolute -right-8 -top-8 w-[240px] h-[240px] opacity-50" />
         </Suspense>
-        <motion.div
-          initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="relative"
-        >
+        <Reveal className="relative">
           <p className="section-label mb-4">Experience</p>
           <h1 className="text-display-lg">
             What I've <span className="italic gradient-text">done.</span>
@@ -40,7 +35,7 @@ export default function Experience() {
             3rd-year CS engineer shipping real products — from hackathon finals
             to production deployments. One timeline, no filler.
           </p>
-        </motion.div>
+        </Reveal>
 
         {/* ── Highlight strip ── */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-10 font-ui">

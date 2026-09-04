@@ -359,3 +359,22 @@
     animation: none;
   }
 }
+
+/* ── Touch devices: heavy backdrop-blur smears on mobile GPUs ──────────
+   Reduce to light blurs (with -webkit- prefix for older mobile Safari)
+   so glass surfaces stay crisp instead of rendering as blurry patches. */
+@media (pointer: coarse) {
+  .glass-strong {
+    background-color: oklch(0.10 0.008 260 / 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .glass {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .glass-subtle {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+}

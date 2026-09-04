@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -21,6 +22,11 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   const { data: dbProfile } = useProfile();
   const { data: dbGithubStats } = useGitHubStats();
   const profile = useFallbackProfile(dbProfile);
+  // Touch GPUs smear filter-blur transitions — use fade/slide only there
+  const [coarse, setCoarse] = useState(false);
+  useEffect(() => {
+    setCoarse(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-clip">
@@ -61,10 +67,10 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           />
           <motion.main
-            initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -12, filter: "blur(4px)" }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            initial={coarse ? { opacity: 0, y: 16 } : { opacity: 0, y: 24, filter: "blur(6px)" }}
+            animate={coarse ? { opacity: 1, y: 0 } : { opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={coarse ? { opacity: 0, y: -8 } : { opacity: 0, y: -12, filter: "blur(4px)" }}
+            transition={{ duration: coarse ? 0.35 : 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="pt-[80px]"
           >
             {children}
